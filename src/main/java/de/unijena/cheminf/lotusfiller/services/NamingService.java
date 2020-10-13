@@ -1,7 +1,7 @@
 package de.unijena.cheminf.lotusfiller.services;
 
 import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProduct;
-import de.unijena.cheminf.lotusfiller.mongocollections.LotusLotusUniqueNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class NamingService {
 
     @Autowired
-    LotusLotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
+    LotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
 
     public void namesToLowcase(){
 

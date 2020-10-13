@@ -37,7 +37,7 @@ import java.util.*;
 public class MolecularFeaturesComputationService {
 
     @Autowired
-    LotusLotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
+    LotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
 
     @Autowired
     AtomContainerToUniqueNaturalProductService atomContainerToUniqueNaturalProductService;

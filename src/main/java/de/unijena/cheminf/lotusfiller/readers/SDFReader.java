@@ -4,7 +4,7 @@ import de.unijena.cheminf.lotusfiller.misc.BeanUtil;
 import de.unijena.cheminf.lotusfiller.misc.DatabaseTypeChecker;
 import de.unijena.cheminf.lotusfiller.misc.MoleculeChecker;
 import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSSourceNaturalProduct;
-import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSLOTUSSourceNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSSourceNaturalProductRepository;
 import de.unijena.cheminf.lotusfiller.services.AtomContainerToSourceNaturalProductService;
 import net.sf.jniinchi.INCHI_OPTION;
 import org.openscience.cdk.DefaultChemObjectBuilder;
@@ -37,7 +37,7 @@ public class SDFReader implements Reader{
 
     private IteratingSDFReader reader = null;
 
-    LOTUSLOTUSSourceNaturalProductRepository sourceNaturalProductRepository;
+    LOTUSSourceNaturalProductRepository sourceNaturalProductRepository;
     AtomContainerToSourceNaturalProductService ac2snp;
 
 
@@ -53,7 +53,7 @@ public class SDFReader implements Reader{
     public SDFReader(){
 
         this.listOfMolecules = new ArrayList<IAtomContainer>();
-        sourceNaturalProductRepository = BeanUtil.getBean(LOTUSLOTUSSourceNaturalProductRepository.class);
+        sourceNaturalProductRepository = BeanUtil.getBean(LOTUSSourceNaturalProductRepository.class);
         ac2snp = BeanUtil.getBean(AtomContainerToSourceNaturalProductService.class);
         moleculeChecker = BeanUtil.getBean(MoleculeChecker.class);
         databaseTypeChecker = BeanUtil.getBean(DatabaseTypeChecker.class);

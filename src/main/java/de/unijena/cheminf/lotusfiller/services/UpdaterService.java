@@ -1,9 +1,9 @@
 package de.unijena.cheminf.lotusfiller.services;
 
 import com.google.common.collect.Lists;
-import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSLOTUSSourceNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSSourceNaturalProductRepository;
 import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProduct;
-import de.unijena.cheminf.lotusfiller.mongocollections.LotusLotusUniqueNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +18,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class UpdaterService {
 
     @Autowired
-    LOTUSLOTUSSourceNaturalProductRepository LOTUSSourceNaturalProductRepository;
+    LOTUSSourceNaturalProductRepository LOTUSSourceNaturalProductRepository;
 
     @Autowired
-    LotusLotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
+    LotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
 
     List<Future<?>> futures = new ArrayList<Future<?>>();
 
@@ -31,7 +31,7 @@ public class UpdaterService {
         //get all sourceNaturalProduct
         System.out.println("Updating links...");
 
-        List<LOTUSSourceNaturalProduct> allSourceNaturalProducts = LOTUSLOTUSSourceNaturalProductRepository.findAll();
+        List<LOTUSSourceNaturalProduct> allSourceNaturalProducts = LOTUSSourceNaturalProductRepository.findAll();
 
         for(LOTUSSourceNaturalProduct snp : allSourceNaturalProducts){
             String unpid = snp.getLotusUniqueNaturalProduct().getId();
@@ -39,7 +39,7 @@ public class UpdaterService {
             if(unp.isPresent()){
                 LotusUniqueNaturalProduct np = unp.get();
                 snp.setLotusUniqueNaturalProduct(np);
-                LOTUSLOTUSSourceNaturalProductRepository.save(snp);
+                LOTUSSourceNaturalProductRepository.save(snp);
             }
 
         }
@@ -52,7 +52,7 @@ public class UpdaterService {
 
         System.out.println("Updating links...");
 
-        //List<LOTUSSourceNaturalProduct> allSourceNaturalProducts = LOTUSLOTUSSourceNaturalProductRepository.findAll();
+        //List<LOTUSSourceNaturalProduct> allSourceNaturalProducts = LOTUSSourceNaturalProductRepository.findAll();
         List<LotusUniqueNaturalProduct> allLotusUniqueNaturalProducts = lotusUniqueNaturalProductRepository.findAll();
 
 

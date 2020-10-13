@@ -4,7 +4,7 @@ package de.unijena.cheminf.lotusfiller.services;
 import de.unijena.cheminf.lotusfiller.mongocollections.PubFingerprintsCounts;
 import de.unijena.cheminf.lotusfiller.mongocollections.PubFingerprintsCountsRepository;
 import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProduct;
-import de.unijena.cheminf.lotusfiller.mongocollections.LotusLotusUniqueNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.List;
 public class FingerprintsCountsFiller {
 
     @Autowired
-    LotusLotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
+    LotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
 
     @Autowired
     PubFingerprintsCountsRepository pubFingerprintsCountsRepository;

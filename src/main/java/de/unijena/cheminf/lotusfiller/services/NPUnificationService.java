@@ -1,9 +1,9 @@
 package de.unijena.cheminf.lotusfiller.services;
 
 import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSSourceNaturalProduct;
-import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSLOTUSSourceNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSSourceNaturalProductRepository;
 import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProduct;
-import de.unijena.cheminf.lotusfiller.mongocollections.LotusLotusUniqueNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProductRepository;
 import org.openscience.cdk.atomtype.CDKAtomTypeMatcher;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.fingerprint.CircularFingerprinter;
@@ -27,10 +27,10 @@ import java.util.*;
 public class NPUnificationService {
 
     @Autowired
-    LOTUSLOTUSSourceNaturalProductRepository LOTUSSourceNaturalProductRepository;
+    LOTUSSourceNaturalProductRepository LOTUSSourceNaturalProductRepository;
 
     @Autowired
-    LotusLotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
+    LotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
 
     @Autowired
     AtomContainerToUniqueNaturalProductService atomContainerToUniqueNaturalProductService;

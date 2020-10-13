@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import de.unijena.cheminf.lotusfiller.mongocollections.Fragment;
 import de.unijena.cheminf.lotusfiller.mongocollections.FragmentRepository;
 import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProduct;
-import de.unijena.cheminf.lotusfiller.mongocollections.LotusLotusUniqueNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProductRepository;
 import org.openscience.cdk.aromaticity.Aromaticity;
 import org.openscience.cdk.aromaticity.ElectronDonation;
 import org.openscience.cdk.exception.CDKException;
@@ -32,7 +32,7 @@ import java.util.concurrent.*;
 public class FragmentCalculatorService {
 
     @Autowired
-    LotusLotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
+    LotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
 
     @Autowired
     FragmentRepository fragmentRepository;

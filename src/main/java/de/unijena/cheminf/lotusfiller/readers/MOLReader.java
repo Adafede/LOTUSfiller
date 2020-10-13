@@ -3,7 +3,7 @@ package de.unijena.cheminf.lotusfiller.readers;
 import de.unijena.cheminf.lotusfiller.misc.BeanUtil;
 import de.unijena.cheminf.lotusfiller.misc.DatabaseTypeChecker;
 import de.unijena.cheminf.lotusfiller.misc.MoleculeChecker;
-import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSLOTUSSourceNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSSourceNaturalProductRepository;
 import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSSourceNaturalProduct;
 import de.unijena.cheminf.lotusfiller.services.AtomContainerToSourceNaturalProductService;
 import net.sf.jniinchi.INCHI_OPTION;
@@ -35,7 +35,7 @@ public class MOLReader implements Reader {
 
     private IteratingSDFReader reader = null;
 
-    LOTUSLOTUSSourceNaturalProductRepository LOTUSSourceNaturalProductRepository;
+    LOTUSSourceNaturalProductRepository LOTUSSourceNaturalProductRepository;
     AtomContainerToSourceNaturalProductService ac2snp;
 
 
@@ -46,7 +46,7 @@ public class MOLReader implements Reader {
 
     public MOLReader(){
         this.listOfMolecules = new ArrayList<IAtomContainer>();
-        LOTUSSourceNaturalProductRepository = BeanUtil.getBean(LOTUSLOTUSSourceNaturalProductRepository.class);
+        LOTUSSourceNaturalProductRepository = BeanUtil.getBean(LOTUSSourceNaturalProductRepository.class);
         ac2snp = BeanUtil.getBean(AtomContainerToSourceNaturalProductService.class);
         moleculeChecker = BeanUtil.getBean(MoleculeChecker.class);
         databaseTypeChecker = BeanUtil.getBean(DatabaseTypeChecker.class);

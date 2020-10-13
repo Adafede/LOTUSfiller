@@ -1,10 +1,10 @@
 package de.unijena.cheminf.lotusfiller.services;
 
 import de.unijena.cheminf.lotusfiller.misc.BeanUtil;
-import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSLOTUSSourceNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSSourceNaturalProductRepository;
 import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSSourceNaturalProduct;
 import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProduct;
-import de.unijena.cheminf.lotusfiller.mongocollections.LotusLotusUniqueNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Transient;
 import org.springframework.stereotype.Service;
@@ -21,11 +21,11 @@ public class UpdaterTask implements Runnable {
 
     @Autowired
     @Transient
-    LotusLotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
+    LotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
 
     @Autowired
     @Transient
-    LOTUSLOTUSSourceNaturalProductRepository LOTUSSourceNaturalProductRepository;
+    LOTUSSourceNaturalProductRepository LOTUSSourceNaturalProductRepository;
 
     List<LotusUniqueNaturalProduct> batchOfMolecules;
 
@@ -34,8 +34,8 @@ public class UpdaterTask implements Runnable {
 
     @Override
     public void run() {
-        this.lotusUniqueNaturalProductRepository = BeanUtil.getBean(LotusLotusUniqueNaturalProductRepository.class);
-        this.LOTUSSourceNaturalProductRepository = BeanUtil.getBean(LOTUSLOTUSSourceNaturalProductRepository.class);
+        this.lotusUniqueNaturalProductRepository = BeanUtil.getBean(LotusUniqueNaturalProductRepository.class);
+        this.LOTUSSourceNaturalProductRepository = BeanUtil.getBean(LOTUSSourceNaturalProductRepository.class);
 
 
         for(LotusUniqueNaturalProduct unp : batchOfMolecules){

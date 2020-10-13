@@ -3,7 +3,7 @@ package de.unijena.cheminf.lotusfiller.services;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProduct;
-import de.unijena.cheminf.lotusfiller.mongocollections.LotusLotusUniqueNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProductRepository;
 import de.unijena.cheminf.lotusfiller.mongocollections.NPSimilarityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class SimilarityComputationService {
 
     @Autowired
-    LotusLotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
+    LotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
 
     @Autowired
     NPSimilarityRepository npSimilarityRepository;

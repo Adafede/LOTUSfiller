@@ -5,7 +5,7 @@ import de.unijena.cheminf.lotusfiller.misc.BeanUtil;
 import de.unijena.cheminf.lotusfiller.mongocollections.Fragment;
 import de.unijena.cheminf.lotusfiller.mongocollections.FragmentRepository;
 import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProduct;
-import de.unijena.cheminf.lotusfiller.mongocollections.LotusLotusUniqueNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProductRepository;
 import org.openscience.cdk.aromaticity.Aromaticity;
 import org.openscience.cdk.aromaticity.ElectronDonation;
 import org.openscience.cdk.exception.CDKException;
@@ -40,7 +40,7 @@ public class FragmentCalculatorTask implements Runnable {
 
     @Autowired
     @Transient
-    LotusLotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
+    LotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
 
     @Autowired
     @Transient
@@ -73,7 +73,7 @@ public class FragmentCalculatorTask implements Runnable {
     @Override
     public void run() {
 
-        this.lotusUniqueNaturalProductRepository = BeanUtil.getBean(LotusLotusUniqueNaturalProductRepository.class);
+        this.lotusUniqueNaturalProductRepository = BeanUtil.getBean(LotusUniqueNaturalProductRepository.class);
         this.fragmentRepository = BeanUtil.getBean(FragmentRepository.class);
         this.atomContainerToUniqueNaturalProductService = BeanUtil.getBean(AtomContainerToUniqueNaturalProductService.class);
         this.sugarRemovalService = BeanUtil.getBean(SugarRemovalService.class);

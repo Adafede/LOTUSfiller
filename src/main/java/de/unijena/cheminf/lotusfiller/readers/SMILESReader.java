@@ -3,7 +3,7 @@ package de.unijena.cheminf.lotusfiller.readers;
 import de.unijena.cheminf.lotusfiller.misc.BeanUtil;
 import de.unijena.cheminf.lotusfiller.misc.DatabaseTypeChecker;
 import de.unijena.cheminf.lotusfiller.misc.MoleculeChecker;
-import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSLOTUSSourceNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSSourceNaturalProductRepository;
 import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSSourceNaturalProduct;
 import de.unijena.cheminf.lotusfiller.services.AtomContainerToSourceNaturalProductService;
 import net.sf.jniinchi.INCHI_OPTION;
@@ -32,7 +32,7 @@ public class SMILESReader implements Reader {
     File file;
     ArrayList<IAtomContainer> listOfMolecules;
     private LineNumberReader smilesReader;
-    LOTUSLOTUSSourceNaturalProductRepository LOTUSSourceNaturalProductRepository;
+    LOTUSSourceNaturalProductRepository LOTUSSourceNaturalProductRepository;
     AtomContainerToSourceNaturalProductService ac2snp;
     MoleculeChecker moleculeChecker;
     DatabaseTypeChecker databaseTypeChecker;
@@ -41,7 +41,7 @@ public class SMILESReader implements Reader {
 
     public SMILESReader(){
         this.listOfMolecules = new ArrayList<IAtomContainer>();
-        LOTUSSourceNaturalProductRepository = BeanUtil.getBean(LOTUSLOTUSSourceNaturalProductRepository.class);
+        LOTUSSourceNaturalProductRepository = BeanUtil.getBean(LOTUSSourceNaturalProductRepository.class);
         ac2snp = BeanUtil.getBean(AtomContainerToSourceNaturalProductService.class);
         moleculeChecker = BeanUtil.getBean(MoleculeChecker.class);
         databaseTypeChecker = BeanUtil.getBean(DatabaseTypeChecker.class);

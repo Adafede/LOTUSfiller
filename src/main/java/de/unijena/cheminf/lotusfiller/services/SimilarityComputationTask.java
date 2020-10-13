@@ -2,7 +2,7 @@ package de.unijena.cheminf.lotusfiller.services;
 
 
 import de.unijena.cheminf.lotusfiller.misc.BeanUtil;
-import de.unijena.cheminf.lotusfiller.mongocollections.LotusLotusUniqueNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProductRepository;
 import de.unijena.cheminf.lotusfiller.mongocollections.NPSimilarity;
 import de.unijena.cheminf.lotusfiller.mongocollections.NPSimilarityRepository;
 import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProduct;
@@ -36,7 +36,7 @@ public class SimilarityComputationTask implements Runnable {
 
     @Autowired
     @Transient
-    LotusLotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
+    LotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
 
 
     ArrayList<List<String>> npInchikeyPairsToCompute;
@@ -48,7 +48,7 @@ public class SimilarityComputationTask implements Runnable {
 
         this.npSimilarityRepository = BeanUtil.getBean(NPSimilarityRepository.class);
         this.atomContainerToUniqueNaturalProductService = BeanUtil.getBean(AtomContainerToUniqueNaturalProductService.class);
-        this.lotusUniqueNaturalProductRepository = BeanUtil.getBean(LotusLotusUniqueNaturalProductRepository.class);
+        this.lotusUniqueNaturalProductRepository = BeanUtil.getBean(LotusUniqueNaturalProductRepository.class);
 
         Fingerprinter fingerprinter = new Fingerprinter();
         System.out.println("Computing similarities for task "+taskid);
