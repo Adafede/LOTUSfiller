@@ -81,76 +81,50 @@ public class CSVReader implements Reader {
                 //System.out.println(header);
 
                 Integer indexOfID = null;
-                Integer indexOfName = null;
-                Integer indexOfSynonym = null;
+
                 Integer indexOfReference = null;
                 Integer indexOfCitation = null;
+                Integer indexOfReferenceTitle = null;
                 Integer indexOfDOI = null;
                 Integer indexOfSMILES = null;
                 Integer indexOfInchi = null;
                 Integer indexOfInchikey = null;
-                Integer indexOfKingdom = null;
-                Integer indexOfGenus = null;
-                Integer indexOfSpecies = null;
-                Integer indexOfGeo = null;
-                Integer indexOfCode = null;
-                Integer indexOfCas = null;
+                Integer indexOfTaxonomy = null;
 
                 for (String item : header) {
 
-                    if (item.toLowerCase().equals("id") || item.toLowerCase().equals("identifier")) {
-                        indexOfID = header.indexOf(item);
-                    }
-                    if (item.toLowerCase().contains("name")) {
-                        indexOfName = header.indexOf(item);
-                    }
+
+
                     if (item.toLowerCase().contains("ref")) {
                         indexOfReference = header.indexOf(item);
                     }
                     if (item.toLowerCase().contains("citation")) {
                         indexOfCitation = header.indexOf(item);
                     }
-                    if (item.toLowerCase().contains("doi")) {
+                    if (item.contains("referenceCleanedDoi")) {
                         indexOfDOI = header.indexOf(item);
                     }
-                    if (item.toLowerCase().contains("smiles")) {
+                    if (item.contains("referenceCleanedTitle")){
+                        indexOfReferenceTitle = header.indexOf(item);
+                    }
+                    if (item.contains("structureCleanedSmiles")) {
                         indexOfSMILES = header.indexOf(item);
                     }
-                    if (item.toLowerCase().contains("inchi") && !item.toLowerCase().contains("inchikey")) {
+                    if (item.contains("structureCleanedInchi") && !item.toLowerCase().contains("inchikey")) {
                         indexOfInchi = header.indexOf(item);
                     }
-                    if (item.toLowerCase().contains("inchikey")) {
+                    if (item.contains("structureCleanedInchikey3D")) {
                         indexOfInchikey = header.indexOf(item);
                     }
-                    if (item.toLowerCase().contains("kingdom") || (item.toLowerCase().contains("origin type") && !(item.toLowerCase().contains("specie"))  )) {
-                        indexOfKingdom = header.indexOf(item);
+                    if (item.contains("organismCleaned_dbTaxoTaxonomy")) {
+                        indexOfTaxonomy = header.indexOf(item);
                     }
-                    if (item.toLowerCase().contains("genu")) {
-                        indexOfGenus = header.indexOf(item);
-                    }
-                    if (item.toLowerCase().contains("specie")) {
-                        indexOfSpecies = header.indexOf(item);
-                    }
-                    if (item.toLowerCase().contains("geo") || item.toLowerCase().contains("site") || item.toLowerCase().contains("local")) {
-                        indexOfGeo = header.indexOf(item);
-                    }
-                    if (item.toLowerCase().contains("code") || item.toLowerCase().contains(this.source)) {
-                        indexOfCode = header.indexOf(item);
-                    }
-                    if(item.toLowerCase().contains("cas") ){
-                        indexOfCas = header.indexOf(item);
-                    }
-                    if(item.toLowerCase().contains("synonym")){
-                        indexOfSynonym = header.indexOf(item);
-                    }
+
 
 
                 }
 
 
-                if (indexOfID == null && indexOfCode != null) {
-                    indexOfID = indexOfCode;
-                }
 
 
                 //read the rest of the file
