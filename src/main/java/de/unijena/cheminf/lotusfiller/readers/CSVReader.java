@@ -151,7 +151,10 @@ public class CSVReader implements Reader {
                             try {
                                 molecule = sp.parseSmiles(dataline.get(indexOfSMILES));
 
-                                molecule.setProperty("FILE_ORIGIN", file.getName().replace(".csv", ""));
+                                String file_origin = file.getName().replace(".csv", "");
+                                file_origin = file.getName().replace(".tsv", "");
+
+                                molecule.setProperty("FILE_ORIGIN", file_origin);
                                 molecule.setProperty("SOURCE", source);
                                 molecule.setProperty("ORIGINAL_SMILES", dataline.get(indexOfSMILES));
 
@@ -217,9 +220,6 @@ public class CSVReader implements Reader {
                             if (indexOfID != null) {
                                 molecule.setID(dataline.get(indexOfID));
                                 molecule.setProperty("ID", dataline.get(indexOfID));
-                            } else if (indexOfName != null) {
-                                molecule.setID(dataline.get(indexOfName));
-                                molecule.setProperty("ID", dataline.get(indexOfName));
                             } else {
                                 molecule.setID(Integer.toString(count));
                                 molecule.setProperty("ID", Integer.toString(count));
@@ -285,101 +285,21 @@ public class CSVReader implements Reader {
 
                                 LOTUSSourceNaturalProduct lotusSourceNaturalProduct = ac2snp.createSNPlInstance(molecule);
 
-                                String taxa = databaseTypeChecker.checkKingdom(this.source);
-                                if (taxa.equals("mixed")) {
-                                    //do things db by db
-                                    if (source.equals("nubbedb")) {
-                                        //there is a p at the beginning of each id for plants
-                                        if (molecule.getID().startsWith("p.")) {
-                                            taxa = "plants";
-                                        } else {
-                                            taxa = "animals";
-                                        }
-                                    } else if (source.equals("npatlas")) {
-                                        if (molecule.getID().startsWith("b")) {
-                                            taxa = "bacteria";
-                                        } else {
-                                            taxa = "fungi";
-                                        }
-                                    }  else if (source.equals("biofacquim")) {
-                                        taxa = dataline.get(indexOfKingdom);
-                                    } else {
-                                        taxa = "notax";
-                                    }
-                                }
+
+
+
                                 lotusSourceNaturalProduct.setOrganismText(new ArrayList<String>());
-                                lotusSourceNaturalProduct.organismText.add(taxa);
-
-                                if (indexOfKingdom != null && dataline.size() >= indexOfKingdom + 1) {
-                                    if (dataline.get(indexOfKingdom).toLowerCase().contains("bacteri")) {
-                                        lotusSourceNaturalProduct.organismText.add("bacteria");
-                                    } else if (dataline.get(indexOfKingdom).toLowerCase().contains("fung")) {
-                                        lotusSourceNaturalProduct.organismText.add("fungi");
-                                    } else if (dataline.get(indexOfKingdom).toLowerCase().contains("plant")) {
-                                        lotusSourceNaturalProduct.organismText.add("plants");
-                                    }else if(dataline.get(indexOfKingdom).toLowerCase().contains("animal")){
-                                        lotusSourceNaturalProduct.organismText.add("animals");
-                                    }else{
-                                        if(!dataline.get(indexOfKingdom).equals("") && !dataline.get(indexOfKingdom).equals("-") && !dataline.get(indexOfKingdom).equals(" ")) {
-                                            lotusSourceNaturalProduct.organismText.add(dataline.get(indexOfKingdom));
-                                        }
-                                    }
-
-                                }
-                                if (indexOfGenus != null && dataline.size() >= indexOfGenus + 1) {
-                                    if(source.equals("np_atlas_2019_12")){
-                                        //join genus and species
-                                        String realSpecies = dataline.get(indexOfGenus)+" "+dataline.get(indexOfSpecies);
-                                        lotusSourceNaturalProduct.organismText.add(realSpecies);
-                                    }else {
-                                        lotusSourceNaturalProduct.organismText.add(dataline.get(indexOfGenus));
-                                    }
-                                }
-                                if (indexOfSpecies != null && dataline.size() >= indexOfSpecies + 1) {
-                                    if(!source.equals("np_atlas_2019_12")){
-                                        if(source.equals("vietherb") || source.equals("knapsack")){
-                                            String[] species = dataline.get(indexOfSpecies).split(";");
-                                            for(String speciesString : species){
-                                                    String spm = speciesString.replace("\'", "");
-                                                    lotusSourceNaturalProduct.organismText.add(spm);
 
 
-                                            }
-                                        }else {
-                                            lotusSourceNaturalProduct.organismText.add(dataline.get(indexOfSpecies));
-                                        }
+                                if (indexOfTaxonomy != null && dataline.size() >= indexOfTaxonomy + 1) {
 
-                                    }
 
-                                }
-
-                                if (indexOfName != null){
-                                    lotusSourceNaturalProduct.setName(dataline.get(indexOfName));
-                                }
-
-                                if (indexOfSynonym != null){
-                                    lotusSourceNaturalProduct.synonyms = new ArrayList<>();
-
-                                    String[] list = dataline.get(indexOfSynonym).split(";");
-                                    for(String e : list){
-                                        lotusSourceNaturalProduct.synonyms.add(e);
-                                    }
-                                    if(indexOfName == null){
-                                        lotusSourceNaturalProduct.setName(list[0]);
+                                    String [] listOfTaxNames = dataline.get(indexOfTaxonomy).split("|");
+                                    for(String tname : listOfTaxNames){
+                                        lotusSourceNaturalProduct.organismText.add(tname);
                                     }
                                 }
 
-                                //GEOGRAPHY
-                                lotusSourceNaturalProduct.setContinent(databaseTypeChecker.checkContinent(this.source));
-                                if (indexOfGeo != null && dataline.size() >= indexOfGeo + 1) {
-                                    lotusSourceNaturalProduct.geographicLocation = new ArrayList<>();
-                                    lotusSourceNaturalProduct.geographicLocation.add(dataline.get(indexOfGeo));
-                                }
-
-                                //CAS
-                                if(indexOfCas !=null){
-                                    lotusSourceNaturalProduct.setCas(dataline.get(indexOfCas));
-                                }
 
                                 //citation reference and doi
                                 if ((indexOfCitation != null && dataline.size() >= indexOfCitation + 1) || (indexOfDOI != null && dataline.size() >= indexOfDOI + 1) || (indexOfReference != null && dataline.size() >= indexOfReference + 1)) {
