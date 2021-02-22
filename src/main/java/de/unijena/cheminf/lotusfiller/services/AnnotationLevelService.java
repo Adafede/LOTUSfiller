@@ -14,22 +14,25 @@ public class AnnotationLevelService {
 
     @Autowired
     LotusUniqueNaturalProductRepository lotusUniqueNaturalProductRepository;
-
+/*
     public void doWorkForAll(){
         System.out.println("Evaluating annotations");
-        List<String> allCoconutIds = lotusUniqueNaturalProductRepository.findAllCoconutIds();
+        List<String> allLotusIds = lotusUniqueNaturalProductRepository.findAllLotusIds();
 
-        for(String coconut_id : allCoconutIds){
-            this.doWorkForOne(coconut_id);
+        for(String lotus_id : allLotusIds){
+            this.doWorkForOne(lotus_id);
         }
         System.out.println("done");
     }
+*/
 
 
-    public void doWorkForOne(String coconut_id){
+
+/*
+    public void doWorkForOne(String lotus_id){
 
 
-        LotusUniqueNaturalProduct np = lotusUniqueNaturalProductRepository.findByCoconut_id(coconut_id).get(0);
+        LotusUniqueNaturalProduct np = lotusUniqueNaturalProductRepository.findByLotus_id(lotus_id).get(0);
 
         if(np != null) {
 
@@ -72,5 +75,5 @@ public class AnnotationLevelService {
 
 
 
-    }
+    }*/
 }

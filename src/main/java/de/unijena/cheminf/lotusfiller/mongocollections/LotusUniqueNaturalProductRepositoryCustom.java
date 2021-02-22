@@ -4,5 +4,7 @@ import java.util.List;
 
 public interface LotusUniqueNaturalProductRepositoryCustom {
 
-    List<String> findAllCoconutIds();
+    List<String> findAllLotusIds();
+
+    List<String> findAllInchiKeys();
 }

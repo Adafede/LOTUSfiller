@@ -92,8 +92,13 @@ public class FragmentCalculatorTask implements Runnable {
 
                 SmilesParser sp = new SmilesParser(SilentChemObjectBuilder.getInstance());
                 IAtomContainer acFull = null;
+
+
+                //System.out.println(np.getSmiles2D());
+
+
                 try {
-                    acFull = sp.parseSmiles(np.smiles);
+                    acFull = sp.parseSmiles(np.getSmiles2D());
                 } catch (InvalidSmilesException e) {
                     e.printStackTrace();
                 }
@@ -126,8 +131,8 @@ public class FragmentCalculatorTask implements Runnable {
                     Hashtable<String, Integer> fragmentsWithSugar = generateCountedAtomSignatures(acFull, height);
                     Hashtable<String, Integer> fragmentsWithoutSugar = generateCountedAtomSignatures(acSugarFree, height);
 
-                    System.out.println(np.smiles);
-                    System.out.println(acFull);
+                    //System.out.println(np.smiles2D);
+                    //System.out.println(acFull);
 
                     //computing the NPL score with the Sugar
                     if (fragmentsWithSugar != null && !fragmentsWithSugar.isEmpty()) {

@@ -147,7 +147,7 @@ public class FragmentCalculatorService {
             IAtomContainer acFull = null;
             try {
                 SmilesParser sp = new SmilesParser(SilentChemObjectBuilder.getInstance());
-                acFull = sp.parseSmiles(np.smiles);
+                acFull = sp.parseSmiles(np.smiles2D);
 
 
             } catch (InvalidSmilesException e) {

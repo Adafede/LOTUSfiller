@@ -22,12 +22,12 @@ public class LOTUSSourceNaturalProductRepositoryImpl implements LOTUSSourceNatur
 
 
     @Override
-    public List<String> findUniqueInchiKeys(){
+    public List<String> findUniqueOriginalInchiKeys(){
 
-        GroupOperation groupByInchikey = group("simpleInchiKey");
+        GroupOperation groupByInchikey = group("inchikey3D");
 
         Aggregation aggregation = newAggregation(groupByInchikey);
-        AggregationResults<String> groupResults = mongoTemplate.aggregate(aggregation, "sourceNaturalProduct", String.class);
+        AggregationResults<String> groupResults = mongoTemplate.aggregate(aggregation, "lOTUSSourceNaturalProduct", String.class);
 
         List<String> result =  groupResults.getMappedResults();
 

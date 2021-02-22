@@ -86,7 +86,7 @@ public class MoleculeChecker {
 
             // check ID
 
-            if (molecule.getID() == "" || molecule.getID() == null) {
+            /*if (molecule.getID() == "" || molecule.getID() == null) {
                 for (Object p : molecule.getProperties().keySet()) {
 
                     if (p.toString().toLowerCase().contains("id")) {
@@ -101,16 +101,16 @@ public class MoleculeChecker {
                 }
 
 
-            }
+            }*/
 
             Map<Object, Object> properties = molecule.getProperties();
-            String id = molecule.getID();
+            //String id = molecule.getID();
 
 
 
 
             //Normalizing the ionization states
-
+            /*
             try {
                 String command = "evaluate -e majorMicrospecies('7.4') "+sg.create(molecule);
                 Process process = Runtime.getRuntime().exec(command);
@@ -139,7 +139,7 @@ public class MoleculeChecker {
             }
 
 
-
+*/
 
 
 
@@ -169,7 +169,7 @@ public class MoleculeChecker {
                 String smi = sg.create(molecule);
                 molecule = sp.parseSmiles(smi);
                 molecule.setProperties(properties);
-                molecule.setID(id);
+                //molecule.setID(id);
             } catch (CDKException | IllegalArgumentException e) {
                 e.printStackTrace();
             }

@@ -50,7 +50,7 @@ public class CreateCNPidService {
 
 
             while ((line = bufferedReader.readLine()) != null){
-                if(!line.startsWith("coconut_id")) {
+                if(!line.startsWith("lotus_id")) {
                     //ArrayList<String> dataline = new ArrayList<String>(Arrays.asList(line.split(","))); //coconut_id = 0, inchikey = 1
                     String[] dataTab = line.split(",") ;
 
@@ -64,7 +64,7 @@ public class CreateCNPidService {
                         }
 
                     } else {
-                        System.out.println("BAD! Could not find " + dataTab[0] + " in the new version of COCONUT!");
+                        System.out.println("BAD! Could not find " + dataTab[0] + " in the new version of LOTUS!");
                     }
 
 
@@ -89,9 +89,9 @@ public class CreateCNPidService {
         for(LotusUniqueNaturalProduct unp : allunp){
 
 
-            String coconut_id = prefix + StringUtils.repeat("0", 7-StringUtils.length(count)) + count;
+            String lotus_id = prefix + StringUtils.repeat("0", 7-StringUtils.length(count)) + count;
 
-            unp.setLotus_id(coconut_id);
+            unp.setLotus_id(lotus_id);
 
             lotusUniqueNaturalProductRepository.save(unp);
 
@@ -110,9 +110,9 @@ public class CreateCNPidService {
         for(LotusUniqueNaturalProduct unp : allunp){
 
 
-            String coconut_id = prefix + StringUtils.repeat("0", 7-StringUtils.length(count)) + count;
+            String lotus_id = prefix + StringUtils.repeat("0", 7-StringUtils.length(count)) + count;
 
-            unp.setLotus_id(coconut_id);
+            unp.setLotus_id(lotus_id);
 
             lotusUniqueNaturalProductRepository.save(unp);
 

@@ -89,16 +89,6 @@ public class ReadWorker implements Runnable {
 
 
 
-
-
-    public void doWorkSM(){
-
-        SMReader smReader = new SMReader();
-        smReader.readFile(this.fileToRead);
-
-    }
-
-
     /*public String returnSource(){
         return this.reader.returnSource();
     }*/
@@ -123,21 +113,9 @@ public class ReadWorker implements Runnable {
 
 
 
-        if(this.submittedFileFormat.equals("mol")){
-            reader = new MOLReader();
-        }
-        else if(this.submittedFileFormat.equals("sdf")){
-            this.reader = new SDFReader();
-        }
-        else if(this.submittedFileFormat.equals("smi")){
-            reader = new SMILESReader();
-        }
-        else if(this.submittedFileFormat.equals("inchi")){
-            reader = new InChiReader();
-        }
-        else if(this.submittedFileFormat.equals("csv")){
-            reader = new CSVReader();
-        }
+
+        reader = new CSVReader();
+
 
         this.reader.readFile(this.fileToRead);
 

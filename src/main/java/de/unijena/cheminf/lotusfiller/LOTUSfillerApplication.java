@@ -96,9 +96,9 @@ public class LOTUSfillerApplication implements CommandLineRunner {
 
 
                 //evaluate annotation level
-                System.out.println("evaluating annotation levels");
-                annotationLevelService.doWorkForAll();
-                System.out.println("done");
+                //System.out.println("evaluating annotation levels");
+                //annotationLevelService.doWorkForAll();
+                //System.out.println("done");
 
                 // Compute additional features
                 molecularFeaturesComputationService.doWork();
@@ -108,7 +108,7 @@ public class LOTUSfillerApplication implements CommandLineRunner {
             }
             else if(args[0].equals("addCNPid")){
 
-                System.out.println("Creating de novo COCONUT IDs");
+                System.out.println("Creating de novo LOTUS IDs");
                 createCNPidService.createDeNovoIDs();
                 updaterService.updateSourceNaturalProductsParallelized(40);
                 while (!updaterService.processFinished()) {
@@ -118,7 +118,7 @@ public class LOTUSfillerApplication implements CommandLineRunner {
 
             }
             else if(args[0].equals("updateCNPid")){
-                System.out.println("Updating COCONUT ids");
+                System.out.println("Updating LOTUS ids");
                 createCNPidService.clearIDs();
                 createCNPidService.importIDs("coconut_ids_june2020.csv");
                 createCNPidService.createIDforNewMolecules();
@@ -148,11 +148,11 @@ public class LOTUSfillerApplication implements CommandLineRunner {
             }
             else if(args[0].equals("generateSDF")){
 
-                exportService.generateSDF("COCONUT.sdf");
+                exportService.generateSDF("LOTUS_2021_02.sdf");
 
             }
             else if(args[0].equals("generateTSV")){
-                exportService.generateTSV("COCONUT.tsv");
+                exportService.generateTSV("LOTUS_2021_02.tsv");
             }
             else if(args[0].equals("onlyImportCoconutIds")){
                 int index_of_id_file = Arrays.asList(args).indexOf("onlyImportCoconutIds")+1;
@@ -167,36 +167,38 @@ public class LOTUSfillerApplication implements CommandLineRunner {
             }else if(args[0].equals("createPubchemBitCounts")) {
                 molecularFeaturesComputationService.createPubchemBitCounts();
 
-            }else if (args[0].equals("evaluateAnnotation")){
-                annotationLevelService.doWorkForAll();
             }else if (args[0].equals("namesToLowerCase")){
                 namingService.namesToLowcase();
             }
-            else if(args[0].equals("generateUniqueSmiles")){
-                molecularFeaturesComputationService.generateUniqueSmiles();
-            }
+
             else { //Filling from scratch
                 //cleaning the DB before filling it
 
 
 
-                String dataDirectory = args[0];
+                //String dataDirectory = args[0];
+                boolean canContinue = false;
 
-                boolean canContinue = readerService.directoryContainsMolecularFiles(dataDirectory);
+                String platinumFile = args[0];
+                if(!platinumFile.equals("")){
+                    canContinue=true;
+                }
+
+                //boolean canContinue = readerService.directoryContainsMolecularFiles(dataDirectory);
 
 
                 if (canContinue) {
                     //insert in mongodb
 
+
                     mongoTemplate.getDb().drop();
 
-                    readerService.readMolecularFilesAndInsertInMongo();
+                    readerService.readMolecularFileAndInsertInMongo(platinumFile);
 
                     //unify
                     //npUnificationService.fetchSourceNames();
                     npUnificationService.doWork();
 
-                    molecularFeaturesComputationService.generateUniqueSmiles();
 
 
                     fragmentReaderService.doWork(0, args[1]);
@@ -212,16 +214,18 @@ public class LOTUSfillerApplication implements CommandLineRunner {
                     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                     System.out.println("at: "+formatter.format(new Date())+"\n");
 
-                    if(Arrays.asList(args).contains("importCOCONUTids")) {
+                    if(Arrays.asList(args).contains("importLOTUSids")) {
                         //coconut_ids_april2020.csv
                         System.out.println("importing  old COCONUT ids");
-                        int index_of_id_file = Arrays.asList(args).indexOf("importCOCONUTids")+1;
+                        int index_of_id_file = Arrays.asList(args).indexOf("importLOTUSids")+1;
                         createCNPidService.clearIDs();
                         createCNPidService.importIDs(args[index_of_id_file]);
                         createCNPidService.createIDforNewMolecules();
 
                         System.out.println("done importing IDS and generating news ones");
                     }else{
+
+                        createCNPidService.clearIDs();
 
                         if(Arrays.asList(args).contains("idPrefix")){
                             int index_of_prefix = Arrays.asList(args).indexOf("idPrefix")+1;
@@ -232,14 +236,11 @@ public class LOTUSfillerApplication implements CommandLineRunner {
                         }
                     }
 
-                    //evaluate annotation level
-                    System.out.println("evaluating annotation levels");
-                    annotationLevelService.doWorkForAll();
-                    System.out.println("done");
+
 
                     // Compute additional features
                     molecularFeaturesComputationService.doWork();
-                    updaterService.updateSourceNaturalProductsParallelized(42);
+                    //updaterService.updateSourceNaturalProductsParallelized(42);
 
                     namingService.namesToLowcase();
 

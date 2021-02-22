@@ -28,10 +28,10 @@ public class FingerprintsCountsFiller {
         Hashtable<Integer, Integer> counts = new Hashtable<>();
 
 
-        List<String> allCoconutIds = lotusUniqueNaturalProductRepository.findAllCoconutIds();
+        List<String> allLotusIds = lotusUniqueNaturalProductRepository.findAllLotusIds();
 
-        for(String coconut_id : allCoconutIds){
-            LotusUniqueNaturalProduct np = lotusUniqueNaturalProductRepository.findByCoconut_id(coconut_id).get(0);
+        for(String lotus_id : allLotusIds){
+            LotusUniqueNaturalProduct np = lotusUniqueNaturalProductRepository.findByLotus_id(lotus_id).get(0);
 
             if(!np.pubchemFingerprint.isEmpty()){
                 for(Integer bitOnIndex : np.pubchemFingerprint){

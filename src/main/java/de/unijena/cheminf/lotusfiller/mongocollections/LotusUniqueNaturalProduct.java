@@ -22,33 +22,34 @@ public class LotusUniqueNaturalProduct {
 
     public Integer heavy_atom_number;
 
-    //@Indexed(name = "inchi_index")
-    public String inchi;
 
-    //@Indexed(name="inchikey_index")
-    public String inchikey;
-
-    //@Indexed(name="smiles_index")
     public String smiles;
 
-    public String unique_smiles;
+    public String inchi;
 
-    //@Indexed(name="clean_smiles_index")
-    public String clean_smiles;
+    public String inchikey;
+
+
+
+    public String inchi2D;
+
+    public String inchikey2D;
+
+    public String smiles2D;
+
 
     public String sugar_free_smiles;
 
     public String deep_smiles = "";
 
 
-    public Hashtable<String, HashSet<String>> absolute_smiles;
+    //public Hashtable<String, HashSet<String>> absolute_smiles;
 
     //@Indexed(name = "name_index")
-    public String name;
+    public String traditional_name;
 
-    public Integer nameTrustLevel=0; //0=unknown, 1= ; 2=ChEBI; 3=manual
 
-    public Integer annotationLevel=0;
+    //public Integer annotationLevel=0;
 
     public HashSet<String> synonyms;
 
@@ -69,13 +70,7 @@ public class LotusUniqueNaturalProduct {
     public Double molecular_weight;
 
 
-    public HashSet<String> citationDOI;
-
-    public HashSet<Integer> taxid;
-
-    public HashSet<String> textTaxa;
-
-    public HashSet<String> geoLocation;
+    public Hashtable<String,Hashtable<String, ArrayList<UncomplicatedTaxonomy>>> taxonomyReferenceObjects;
 
 
 
@@ -109,7 +104,8 @@ public class LotusUniqueNaturalProduct {
 
     public Integer bond_count;
 
-    public HashSet<String> found_in_databases;
+    public HashSet<String> allTaxa;
+
 
     public HashSet<ArrayList<String>> xrefs ; // in each arrayList there is the source,  idInSource,  and the URL
 
@@ -145,10 +141,10 @@ public class LotusUniqueNaturalProduct {
     public String pubchemBitsString;
 
 
-    public String chemicalSuperClass;
-    public String chemicalClass;
-    public String chemicalSubClass;
-    public String directParentClassification;
+    public String chemicalNPPathway;
+    public String chemicalNPClass;
+    public String chemicalNPsuperclass;
+
 
 
 
@@ -263,10 +259,13 @@ public class LotusUniqueNaturalProduct {
         fragmentsWithSugar.put(f, nbInMolecule);
     }
 
+    public Hashtable<String, Hashtable<String, ArrayList<UncomplicatedTaxonomy>>> getTaxonomyReferenceObjects() {
+        return taxonomyReferenceObjects;
+    }
 
-
-
-
+    public void setTaxonomyReferenceObjects(Hashtable<String, Hashtable<String, ArrayList<UncomplicatedTaxonomy>>> taxonomyReferenceObjects) {
+        this.taxonomyReferenceObjects = taxonomyReferenceObjects;
+    }
 
     public String getId() {
         return id;
@@ -290,30 +289,6 @@ public class LotusUniqueNaturalProduct {
 
     public void setHeavy_atom_number(Integer heavy_atom_number) {
         this.heavy_atom_number = heavy_atom_number;
-    }
-
-    public String getInchi() {
-        return inchi;
-    }
-
-    public void setInchi(String inchi) {
-        this.inchi = inchi;
-    }
-
-    public String getInchikey() {
-        return inchikey;
-    }
-
-    public void setInchikey(String inchikey) {
-        this.inchikey = inchikey;
-    }
-
-    public String getSmiles() {
-        return smiles;
-    }
-
-    public void setSmiles(String smiles) {
-        this.smiles = smiles;
     }
 
     public String getMolecular_formula() {
@@ -712,54 +687,6 @@ public class LotusUniqueNaturalProduct {
         this.tpsaEfficiency = tpsaEfficiency;
     }
 
-    public String getClean_smiles() {
-        return clean_smiles;
-    }
-
-    public void setClean_smiles(String clean_smiles) {
-        this.clean_smiles = clean_smiles;
-    }
-
-
-    public HashSet<String> getCitationDOI() {
-        return citationDOI;
-    }
-
-    public void setCitationDOI(HashSet<String> citationDOI) {
-        this.citationDOI = citationDOI;
-    }
-
-    public HashSet<Integer> getTaxid() {
-        return taxid;
-    }
-
-    public void setTaxid(HashSet<Integer> taxid) {
-        this.taxid = taxid;
-    }
-
-    public HashSet<String> getGeoLocation() {
-        return geoLocation;
-    }
-
-    public void setGeoLocation(HashSet<String> geoLocation) {
-        this.geoLocation = geoLocation;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public HashSet<String> getTextTaxa() {
-        return textTaxa;
-    }
-
-    public void setTextTaxa(HashSet<String> textTaxa) {
-        this.textTaxa = textTaxa;
-    }
 
     public HashSet<String> getSynonyms() {
         return synonyms;
@@ -810,13 +737,6 @@ public class LotusUniqueNaturalProduct {
     }
 
 
-    public HashSet<String> getFound_in_databases() {
-        return found_in_databases;
-    }
-
-    public void setFound_in_databases(HashSet<String> found_in_databases) {
-        this.found_in_databases = found_in_databases;
-    }
 
     public Hashtable<String, Integer> getErtlFunctionalFragments() {
         return ertlFunctionalFragments;
@@ -834,13 +754,7 @@ public class LotusUniqueNaturalProduct {
         this.ertlFunctionalFragmentsPseudoSmiles = ertlFunctionalFragmentsPseudoSmiles;
     }
 
-    public Hashtable<String, HashSet<String>> getAbsolute_smiles() {
-        return absolute_smiles;
-    }
 
-    public void setAbsolute_smiles(Hashtable<String, HashSet<String>> absolute_smiles) {
-        this.absolute_smiles = absolute_smiles;
-    }
 
     public ArrayList<Integer> getPubchemFingerprint() {
         return pubchemFingerprint;
@@ -921,28 +835,12 @@ public class LotusUniqueNaturalProduct {
         return contains_linear_sugars;
     }
 
-    public Integer getNameTrustLevel() {
-        return nameTrustLevel;
-    }
-
-    public void setNameTrustLevel(Integer nameTrustLevel) {
-        this.nameTrustLevel = nameTrustLevel;
-    }
-
     public Integer getNumber_of_rings() {
         return number_of_rings;
     }
 
     public void setNumber_of_rings(Integer number_of_rings) {
         this.number_of_rings = number_of_rings;
-    }
-
-    public Integer getAnnotationLevel() {
-        return annotationLevel;
-    }
-
-    public void setAnnotationLevel(Integer annotationLevel) {
-        this.annotationLevel = annotationLevel;
     }
 
     public HashSet<ArrayList<String>> getXrefs() {
@@ -959,15 +857,6 @@ public class LotusUniqueNaturalProduct {
 
     public void setPubfp(HashMap<Integer, ArrayList<Integer>> pubfp) {
         this.pubfp = pubfp;
-    }
-
-
-    public String getUnique_smiles() {
-        return unique_smiles;
-    }
-
-    public void setUnique_smiles(String unique_smiles) {
-        this.unique_smiles = unique_smiles;
     }
 
     public String getIupac_name() {
@@ -995,35 +884,84 @@ public class LotusUniqueNaturalProduct {
         this.collection = collection;
     }
 
-    public String getChemicalSuperClass() {
-        return chemicalSuperClass;
+
+    public String getChemicalNPPathway() {
+        return chemicalNPPathway;
     }
 
-    public void setChemicalSuperClass(String chemicalSuperClass) {
-        this.chemicalSuperClass = chemicalSuperClass;
+    public void setChemicalNPPathway(String chemicalNPPathway) {
+        this.chemicalNPPathway = chemicalNPPathway;
     }
 
-    public String getChemicalClass() {
-        return chemicalClass;
+    public String getChemicalNPClass() {
+        return chemicalNPClass;
     }
 
-    public void setChemicalClass(String chemicalClass) {
-        this.chemicalClass = chemicalClass;
+    public void setChemicalNPClass(String chemicalNPClass) {
+        this.chemicalNPClass = chemicalNPClass;
     }
 
-    public String getChemicalSubClass() {
-        return chemicalSubClass;
+    public String getChemicalNPsuperclass() {
+        return chemicalNPsuperclass;
     }
 
-    public void setChemicalSubClass(String chemicalSubClass) {
-        this.chemicalSubClass = chemicalSubClass;
+    public void setChemicalNPsuperclass(String chemicalNPsuperclass) {
+        this.chemicalNPsuperclass = chemicalNPsuperclass;
     }
 
-    public String getDirectParentClassification() {
-        return directParentClassification;
+    public String getSmiles() {
+        return smiles;
     }
 
-    public void setDirectParentClassification(String directParentClassification) {
-        this.directParentClassification = directParentClassification;
+    public void setSmiles(String smiles) {
+        this.smiles = smiles;
+    }
+
+    public String getInchi() {
+        return inchi;
+    }
+
+    public void setInchi(String inchi) {
+        this.inchi = inchi;
+    }
+
+    public String getInchikey() {
+        return inchikey;
+    }
+
+    public void setInchikey(String inchikey) {
+        this.inchikey = inchikey;
+    }
+
+    public String getInchi2D() {
+        return inchi2D;
+    }
+
+    public void setInchi2D(String inchi2D) {
+        this.inchi2D = inchi2D;
+    }
+
+    public String getInchikey2D() {
+        return inchikey2D;
+    }
+
+    public void setInchikey2D(String inchikey2D) {
+        this.inchikey2D = inchikey2D;
+    }
+
+    public String getSmiles2D() {
+        return smiles2D;
+    }
+
+    public void setSmiles2D(String smiles2D) {
+        this.smiles2D = smiles2D;
+    }
+
+    public String getTraditional_name() {
+        return traditional_name;
+    }
+
+    public void setTraditional_name(String traditional_name) {
+        this.traditional_name = traditional_name;
     }
 }

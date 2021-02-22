@@ -16,12 +16,25 @@ public class LotusUniqueNaturalProductRepositoryImpl implements LotusUniqueNatur
 
 
     @Override
-    public List<String> findAllCoconutIds() {
+    public List<String> findAllLotusIds() {
 
-        List<String> coconut_ids_list = mongoTemplate.query(LotusUniqueNaturalProduct.class)
-                .distinct("coconut_id")
+        List<String> lotus_ids_list = mongoTemplate.query(LotusUniqueNaturalProduct.class)
+                .distinct("lotus_id")
                 .as(String.class)
                 .all();
-        return coconut_ids_list;
+        return lotus_ids_list;
+    }
+
+    @Override
+    public List<String> findAllInchiKeys() {
+
+
+
+
+        List<String> inchikeys_list = mongoTemplate.query(LotusUniqueNaturalProduct.class)
+                .distinct("inchikey3D")
+                .as(String.class)
+                .all();
+        return inchikeys_list;
     }
 }

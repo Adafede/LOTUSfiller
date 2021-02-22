@@ -2,6 +2,7 @@ package de.unijena.cheminf.lotusfiller.readers;
 
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,6 +41,34 @@ public class ReaderService {
             e.printStackTrace();
         }
         return molecularFileFound;
+
+    }
+
+    public boolean readMolecularFileAndInsertInMongo(String molFile){
+
+        ExecutorService taskExecutor = Executors.newFixedThreadPool(1);
+
+            ReadWorker rw = new ReadWorker();
+            rw.setFileToRead(molFile);
+
+            rw.acceptFileFormat = rw.acceptFile(molFile);
+            boolean start = rw.startWorker();
+
+            if(start){
+                taskExecutor.execute(rw);
+                System.out.println("Task "+molFile+" executing");
+
+            }
+
+
+        taskExecutor.shutdown();
+        try {
+            taskExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return true;
 
     }
 

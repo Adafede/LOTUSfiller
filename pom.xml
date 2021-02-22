@@ -15,7 +15,7 @@
     <description>COCONUT-based filler for LOTUS database</description>
 
     <properties>
-        <java.version>15</java.version>
+        <java.version>1.8</java.version>
         <cdk.version>2.3</cdk.version>
         <guava.version>28.0-jre</guava.version>
         <docker.image.prefix>lotus</docker.image.prefix>

@@ -13,16 +13,17 @@ public interface LotusUniqueNaturalProductRepository extends MongoRepository<Lot
 
     public List<LotusUniqueNaturalProduct> findByInchikey(String inchikey);
 
-    @Query("{ coconut_id : ?0}")
-    public List<LotusUniqueNaturalProduct> findByCoconut_id(String coconut_id);
+    @Query("{ lotus_id : ?0}")
+    public List<LotusUniqueNaturalProduct> findByLotus_id(String lotus_id);
 
     @Query("{ clean_smiles : ?0}")
-    public List<LotusUniqueNaturalProduct> findByClean_smiles(String clean_smiles);
+    public List<LotusUniqueNaturalProduct> findBySmiles2D(String smiles);
 
     @Query("{molecular_formula : ?0}")
     public List<LotusUniqueNaturalProduct> findByMolecular_formula(String molecular_formula);
 
-    public List<LotusUniqueNaturalProduct> findByName(String name);
+    @Query("{traditional_name : ?0}")
+    public List<LotusUniqueNaturalProduct> findByTraditional_name(String name);
 
     @Query("{ $text: { $search: ?0 } }")
     public List<LotusUniqueNaturalProduct> fuzzyNameSearch(String name);

@@ -1,9 +1,6 @@
 package de.unijena.cheminf.lotusfiller.services;
 
-import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSSourceNaturalProduct;
-import de.unijena.cheminf.lotusfiller.mongocollections.LOTUSSourceNaturalProductRepository;
-import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProduct;
-import de.unijena.cheminf.lotusfiller.mongocollections.LotusUniqueNaturalProductRepository;
+import de.unijena.cheminf.lotusfiller.mongocollections.*;
 import org.openscience.cdk.atomtype.CDKAtomTypeMatcher;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.fingerprint.CircularFingerprinter;
@@ -57,100 +54,115 @@ public class NPUnificationService {
 
         System.out.println("NP unification InChi-key based");
 
-        sourceNames = this.fetchSourceNames();
+        //sourceNames = this.fetchSourceNames();
 
-        sourceURLs = this.createSourceURLS();
+        //sourceURLs = this.createSourceURLS();
+
+
 
         System.out.println("SOURCES  "+sourceNames);
 
-        List<String> uniqueInchiKeys = LOTUSSourceNaturalProductRepository.findUniqueInchiKeys();
+        List<String> uniqueInchiKeys = LOTUSSourceNaturalProductRepository.findUniqueOriginalInchiKeys(); //find all distinct original inchi keys
+        System.out.println("Total number of unique InchiKeys " + uniqueInchiKeys.size());
 
         for(String oinchikey: uniqueInchiKeys){
 
 
-            String inchikey =  oinchikey.split("\"")[3];  //oinchikey.toString();
-            System.out.println(inchikey);
-            List<LOTUSSourceNaturalProduct> snpList = LOTUSSourceNaturalProductRepository.findBySimpleInchiKey(inchikey);
+            String inchikey3D =  oinchikey.split("\"")[3];  //oinchikey.toString();
+            System.out.println(inchikey3D);
+            List<LOTUSSourceNaturalProduct> snpList = LOTUSSourceNaturalProductRepository.findByInchikey3D(inchikey3D);
             //System.out.println(snpList.get(0).simpleInchiKey+" "+snpList.get(0).source);
 
             //create a new UniqueNatural product
 
             LotusUniqueNaturalProduct unp = new LotusUniqueNaturalProduct();
 
-            unp.setInchikey(inchikey);
-            unp.setInchi(snpList.get(0).simpleInchi);
-            unp.setSmiles(snpList.get(0).simpleSmiles);
+            unp.setInchikey(inchikey3D);
+            unp.setInchi(snpList.get(0).inchi3D);
+            unp.setSmiles(snpList.get(0).smiles3d);
+
+            unp.setInchikey2D(snpList.get(0).inchikey2D);
+            unp.setInchi2D(snpList.get(0).inchi2D);
+            unp.setSmiles2D(snpList.get(0).smiles2d);
+
+
+
+
             unp.setTotal_atom_number(snpList.get(0).getTotalAtomNumber());
             unp.setHeavy_atom_number(snpList.get(0).getHeavyAtomNumber());
 
+
+
+
+            unp.traditional_name = snpList.get(0).traditionalName;
+            unp.iupac_name = snpList.get(0).iupacName;
+
             unp = lotusUniqueNaturalProductRepository.save(unp);
 
-
-            unp.name = "";
-
             unp.synonyms = new HashSet<>();
-            unp.textTaxa = new HashSet<>();
-            unp.taxid = new HashSet<>();
-            unp.geoLocation = new HashSet<>();
-            unp.citationDOI = new HashSet<>();
-            unp.found_in_databases = new HashSet<>();
+            unp.allTaxa = new HashSet<>();
+
+            HashSet<TaxonomyReferenceObject> taxonomyReferenceObjects = new HashSet<>();
+
+
+
+
             unp.xrefs = new HashSet<>();
-            unp.absolute_smiles = new Hashtable<>();
+            //unp.absolute_smiles = new Hashtable<>();
+
+
+            // deal with taxonomy reference objects : unify and add urls
+            unp.taxonomyReferenceObjects = new Hashtable<>(); // key = DOI, value = another HT (db bame -> uncomplicatedTaxonomy)
+
+
+
 
             //associate the LotusUniqueNaturalProduct entry to each of the sources
             for(LOTUSSourceNaturalProduct snp : snpList){
-                snp.setLotusUniqueNaturalProduct(unp);
-                LOTUSSourceNaturalProductRepository.save(snp);
+                //snp.setLotusUniqueNaturalProduct(unp);
+                //LOTUSSourceNaturalProductRepository.save(snp);
 
                 //add annotations from SourceNaturalProducts
 
-                //name
-                //checking if name doesn't contain DB name
-               boolean nameIsReal = true;
-                for(String dbname: this.sourceNames){
-                    if(snp.getName() != null && (snp.getName().toLowerCase().contains(dbname) || snp.getName().startsWith("MLS") || snp.getName().startsWith("SMR") || snp.getName().contains("MLSMR"))){
-                        nameIsReal=false;
+                String snpDOI = snp.taxonomyReferenceObject.getReferenceDOI();
+                String taxoDB = snp.taxonomyReferenceObject.getOrganism_taxo_db();
+
+                if(unp.taxonomyReferenceObjects.containsKey(snpDOI)){
+                    // need to check if DB already in or not
+
+                    if( unp.taxonomyReferenceObjects.get(snpDOI).containsKey(taxoDB)){
+                        UncomplicatedTaxonomy unt = makeUncomplicatedTaxonomyFromSourceNP(snp.getTaxonomyReferenceObject(), unp);
+                        unp.taxonomyReferenceObjects.get(snpDOI).get(taxoDB).add(unt);
+
+                    }else{
+                        ArrayList<UncomplicatedTaxonomy> taxoObjectsList = new ArrayList<>();
+                        UncomplicatedTaxonomy unt = makeUncomplicatedTaxonomyFromSourceNP(snp.getTaxonomyReferenceObject(), unp);
+                        unp.taxonomyReferenceObjects.get(snpDOI).put(taxoDB, taxoObjectsList);
+                        unp.taxonomyReferenceObjects.get(snpDOI).get(taxoDB).add(unt);
+
+
                     }
+
+                }else{
+                    // need to add the new doi and the taxoDB and create arrayList and add the uncomplicated taxonomy
+                    Hashtable<String, ArrayList<UncomplicatedTaxonomy>> ht2 = new Hashtable<>();
+                    ArrayList<UncomplicatedTaxonomy> taxoObjectsList = new ArrayList<>();
+                    UncomplicatedTaxonomy unt = makeUncomplicatedTaxonomyFromSourceNP(snp.getTaxonomyReferenceObject(), unp);
+                    taxoObjectsList.add(unt);
+                    ht2.put(taxoDB, taxoObjectsList);
+
+                    unp.taxonomyReferenceObjects.put(snpDOI, ht2);
+
+
+
+
                 }
 
 
-                if(nameIsReal && snp.getName() != null && ((unp.getName() == null || unp.getName() =="") &&  snp.getName().length()>3)){
 
 
-                        String name = snp.getName().trim();
-
-                        String[] names = name.split("\\\n");
 
 
-                        unp.setName(names[0]);
-                        if (names.length > 1) {
-                            for (int i = 1; i < names.length; i++) {
-                                unp.synonyms.add(names[i]);
-                            }
-                        }
-
-
-                }
-                else if( unp.getName() != null && unp.getName() != "" && snp.getName() != null){
-                    if(snp.getSource().toLowerCase().contains("piellabdata")){
-                        //replace name by ChebiName
-                        unp.synonyms.add(unp.name);
-                        unp.name = snp.getName().trim();
-
-                        unp.nameTrustLevel=3;
-                    }
-                    else if(snp.getSource().toLowerCase().contains("chebi") && unp.nameTrustLevel<=2){
-
-                        //replace name by ChebiName
-                        unp.synonyms.add(unp.name);
-                        unp.name = snp.getName().trim();
-
-                        unp.nameTrustLevel=2;
-                    }
-                    else {
-                        unp.synonyms.add(snp.getName().trim());
-                    }
-                }
 
                 //synonyms
                 if(snp.getSynonyms() != null){
@@ -167,82 +179,14 @@ public class NPUnificationService {
 
                 }
 
-
-                //species
-                if(snp.organismText != null ){
-
-                    unp.textTaxa.addAll(snp.organismText);
-                }
-                if(snp.taxid != null){
-                    unp.taxid.addAll(snp.taxid);
-                }
-                if(unp.textTaxa.size()>1 && unp.textTaxa.contains("notax")){
-                    unp.textTaxa.remove("notax");
-                }
-
-
-                //geo
-                if(snp.getGeographicLocation() != null){
-                    unp.geoLocation.addAll(snp.getGeographicLocation());
-                }
-                if(snp.getContinent() != null){
-                    unp.geoLocation.add(snp.getContinent());
-                }
-                if(unp.geoLocation.size()>1 && unp.geoLocation.contains("nogeo")){
-                    unp.geoLocation.remove("nogeo");
-                }
-
-
-                //refs
-                if(snp.getCitation() != null){
-                    for(String cit : snp.getCitation()){
-                        unp.citationDOI.add(cit.trim());
-                    }
-
-                }
-
                 //cas
                 if(snp.getCas() != null && snp.getCas() != ""){
                     unp.setCas(snp.getCas() );
                 }
 
-                //database
-                if(snp.getSource() != null){
-                    unp.found_in_databases.add(snp.getSource());
 
 
 
-                    if(sourceURLs.containsKey(snp.getSource())) {
-                        ArrayList<String> miniXref = new ArrayList<String>();
-                        miniXref.add(snp.getSource());
-                        miniXref.add(snp.idInSource);
-                        miniXref.add(sourceURLs.get(snp.getSource()));
-                        unp.xrefs.add(miniXref);
-                    }
-
-                }
-
-                //Absolute smiles (with stereochemistry)
-                if(snp.getAbsoluteSmiles() != null && !snp.getAbsoluteSmiles().equals("")) {
-                    if (unp.absolute_smiles.containsKey(snp.getAbsoluteSmiles())) {
-                        unp.absolute_smiles.get(snp.getAbsoluteSmiles()).add(snp.getSource());
-
-                    } else {
-                        HashSet newSourceList = new HashSet();
-                        newSourceList.add(snp.getSource());
-                        unp.absolute_smiles.put(snp.getAbsoluteSmiles(), newSourceList);
-                    }
-                }
-                else{
-                    if(unp.absolute_smiles.containsKey("nostereo")) {
-                        unp.absolute_smiles.get("nostereo").add(snp.getSource());
-                    }
-                    else{
-                        HashSet newSourceList = new HashSet();
-                        newSourceList.add(snp.getSource());
-                        unp.absolute_smiles.put("nostereo", newSourceList);
-                    }
-                }
 
             }
 
@@ -287,7 +231,7 @@ public class NPUnificationService {
 
 
         } catch (CDKException e) {
-            System.out.println("Too complex: "+m.getSmiles());
+            System.out.println("Too complex: "+m.getSmiles2D());
         }
 
         //compute molecular formula
@@ -559,6 +503,70 @@ public class NPUnificationService {
 
         return urls;
 
+    }
+
+
+    public UncomplicatedTaxonomy makeUncomplicatedTaxonomyFromSourceNP(TaxonomyReferenceObject tro, LotusUniqueNaturalProduct unp){
+        UncomplicatedTaxonomy uncomplicatedTaxonomy = new UncomplicatedTaxonomy();
+
+        uncomplicatedTaxonomy.setCleaned_organism_id(tro.getCleaned_organism_id());
+
+        uncomplicatedTaxonomy.setOrganism_value(tro.getOrganism_value());
+        uncomplicatedTaxonomy.setOrganism_url(tro.getOrganism_url());
+
+
+        unp.allTaxa.add(tro.getOrganism_value());
+
+
+        if(tro.getDomain() != null && tro.getDomain() != "" && !tro.getDomain().equals("null")){
+            uncomplicatedTaxonomy.setDomain(tro.getDomain());
+
+            unp.allTaxa.add(tro.getDomain());
+        }
+
+        if(tro.getSuperkingdom() != null && tro.getSuperkingdom() != "" && !tro.getSuperkingdom().equals("null")){
+            uncomplicatedTaxonomy.setSuperkingdom(tro.getSuperkingdom());
+            unp.allTaxa.add(tro.getSuperkingdom());
+        }
+
+        if(tro.getKingdom() != null && tro.getKingdom() != "" && !tro.getKingdom().equals("null")){
+            uncomplicatedTaxonomy.setKingdom(tro.getKingdom());
+            unp.allTaxa.add(tro.getKingdom());
+        }
+
+        if(tro.getPhylum() != null && tro.getPhylum() != "" && !tro.getPhylum().equals("null")){
+            uncomplicatedTaxonomy.setPhylum(tro.getPhylum());
+            unp.allTaxa.add(tro.getPhylum());
+        }
+
+        if(tro.getClassx() != null && tro.getClassx() != "" && !tro.getClassx().equals("null")){
+            uncomplicatedTaxonomy.setClassx(tro.getClassx());
+            unp.allTaxa.add(tro.getClassx());
+        }
+
+        if(tro.getOrder()!=null && tro.getOrder() != "" && !tro.getOrder().equals("null")){
+            uncomplicatedTaxonomy.setOrder(tro.getOrder());
+            unp.allTaxa.add(tro.getOrder());
+        }
+
+        if(tro.getFamily() != null && tro.getFamily() != "" && !tro.getFamily().equals("null")){
+            uncomplicatedTaxonomy.setFamily(tro.getFamily());
+            unp.allTaxa.add(tro.getFamily());
+        }
+
+        if(tro.getGenus() != null && tro.getGenus() != "" && !tro.getGenus().equals("null")){
+            uncomplicatedTaxonomy.setGenus(tro.getGenus());
+            unp.allTaxa.add(tro.getGenus());
+        }
+
+        if(tro.getSpecies() != null && tro.getSpecies() != "" && !tro.getSpecies().equals("null")){
+            uncomplicatedTaxonomy.setSpecies(tro.getSpecies());
+            unp.allTaxa.add(tro.getSpecies());
+        }
+
+
+
+        return uncomplicatedTaxonomy;
     }
 
 

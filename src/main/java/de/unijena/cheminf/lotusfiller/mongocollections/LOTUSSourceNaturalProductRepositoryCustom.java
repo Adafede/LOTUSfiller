@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface LOTUSSourceNaturalProductRepositoryCustom {
 
-    List<String> findUniqueInchiKeys();
+    List<String> findUniqueOriginalInchiKeys();
 
     List<Object> findUniqueSourceNames();
 

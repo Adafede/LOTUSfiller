@@ -18,7 +18,7 @@ public class NamingService {
     public void namesToLowcase(){
 
         System.out.println("Converting names to low case");
-        List<String> allCoconutIds = lotusUniqueNaturalProductRepository.findAllCoconutIds();
+        List<String> allCoconutIds = lotusUniqueNaturalProductRepository.findAllLotusIds();
 
         for(String coconut_id : allCoconutIds){
             this.npNameToLowcase(coconut_id);
@@ -28,15 +28,15 @@ public class NamingService {
     }
 
 
-    public void npNameToLowcase(String coconut_id){
+    public void npNameToLowcase(String lotus_id){
 
-        LotusUniqueNaturalProduct np = lotusUniqueNaturalProductRepository.findByCoconut_id(coconut_id).get(0);
+        LotusUniqueNaturalProduct np = lotusUniqueNaturalProductRepository.findByLotus_id(lotus_id).get(0);
 
         if(np != null) {
 
-            if(np.name != null && np.name != ""){
+            if(np.traditional_name != null && np.traditional_name != ""){
 
-                np.name = np.name.toLowerCase();
+                np.traditional_name = np.traditional_name.toLowerCase();
 
                 if(!np.synonyms.isEmpty()){
                     List<String> lowSynonyms = np.synonyms.stream()

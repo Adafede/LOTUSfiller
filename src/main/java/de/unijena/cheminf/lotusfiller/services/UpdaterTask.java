@@ -42,7 +42,7 @@ public class UpdaterTask implements Runnable {
 
             //find all SourceNaturalProducts that correspond to this UniqueNaturalproduct
 
-            List<LOTUSSourceNaturalProduct> allSNP = LOTUSSourceNaturalProductRepository.findBySimpleInchiKey(unp.inchikey);
+            List<LOTUSSourceNaturalProduct> allSNP = LOTUSSourceNaturalProductRepository.findByInchikey3D(unp.inchikey);
             for(LOTUSSourceNaturalProduct snp : allSNP){
                 snp.setLotusUniqueNaturalProduct(unp);
                 LOTUSSourceNaturalProductRepository.save(snp);

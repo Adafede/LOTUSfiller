@@ -25,7 +25,7 @@ public class ExportService {
 
 
     public void generateTSV(String filename){
-        System.out.println("Generating TSV file for all COCONUT");
+        System.out.println("Generating TSV file for all LOTUS");
 
         FileWriter fw = null;
         try {
@@ -34,7 +34,7 @@ public class ExportService {
             List<LotusUniqueNaturalProduct> allNP = lotusUniqueNaturalProductRepository.findAll();
             int count = 0;
             for(LotusUniqueNaturalProduct np : allNP){
-                fw.write(np.lotus_id+"\t"+np.clean_smiles+"\n");
+                fw.write(np.lotus_id+"\t"+np.smiles+"\n");
             }
 
             fw.close();
@@ -54,7 +54,7 @@ public class ExportService {
 
 
     public void generateSDF(String filename){
-        System.out.println("Generating SDF file for all COCONUT");
+        System.out.println("Generating SDF file for all LOTUS");
 
 
 
@@ -66,26 +66,25 @@ public class ExportService {
 
             //List<LotusUniqueNaturalProduct> allNP = lotusUniqueNaturalProductRepository.findAll();
 
-            List<String> coconut_ids = lotusUniqueNaturalProductRepository.findAllCoconutIds();
+            List<String> lotus_ids = lotusUniqueNaturalProductRepository.findAllLotusIds();
             int count = 0;
 
-            for(String coconut_id : coconut_ids){
+            for(String lotus_id : lotus_ids){
                 try {
-                    LotusUniqueNaturalProduct np = lotusUniqueNaturalProductRepository.findByCoconut_id(coconut_id).get(0);
+                    LotusUniqueNaturalProduct np = lotusUniqueNaturalProductRepository.findByLotus_id(lotus_id).get(0);
                     IAtomContainer ac = atomContainerToUniqueNaturalProductService.createAtomContainer(np);
 
                     // add most of molecular descriptors and available metadata
                     ac.setProperty("coconut_id", np.lotus_id);
                     ac.setProperty("inchi", np.inchi);
                     ac.setProperty("inchikey", np.inchikey);
-                    ac.setProperty("SMILES", np.clean_smiles);
+                    ac.setProperty("SMILES", np.smiles);
                     ac.setProperty("sugar_free_smiles", np.sugar_free_smiles);
                     ac.setProperty("molecular_formula", np.molecular_formula);
                     ac.setProperty("molecular_weight", np.molecular_weight);
-                    ac.setProperty("citationDOI", np.citationDOI.toString());
-                    ac.setProperty("textTaxa", np.textTaxa.toString());
-                    ac.setProperty("geoLocation", np.geoLocation);
-                    ac.setProperty("name", np.name);
+                    ac.setProperty("citationDOI", np.taxonomyReferenceObjects.keySet().toArray().toString());
+                    ac.setProperty("textTaxa", np.taxonomyReferenceObjects.toString());
+                    ac.setProperty("name", np.traditional_name);
                     ac.setProperty("synonyms", np.synonyms.toString());
                     ac.setProperty("NPL score", np.npl_score);
                     ac.setProperty("number_of_carbons", np.number_of_carbons);
@@ -94,7 +93,6 @@ public class ExportService {
                     ac.setProperty("number_of_rings", np.number_of_rings);
                     ac.setProperty("total_atom_number", np.total_atom_number);
                     ac.setProperty("bond_count", np.bond_count);
-                    ac.setProperty("found_in_databases", np.found_in_databases.toString());
                     ac.setProperty("murko_framework", np.murko_framework);
                     ac.setProperty("alogp", np.alogp);
                     ac.setProperty("apol", np.apol);
@@ -108,7 +106,7 @@ public class ExportService {
                         System.out.println("Molecules written: " + count);
                     }
                 }catch(ConversionFailedException e){
-                    System.out.println(coconut_id);
+                    System.out.println(lotus_id);
                 }
 
 
