@@ -61,6 +61,8 @@ public class LOTUSfillerApplication implements CommandLineRunner {
     @Autowired
     FingerprintsCountsFiller fingerprintsCountsFiller;
 
+    @Autowired
+    ReadAndLoadMetadata readAndLoadMetadata;
 
     public static void main(String[] args) {
         SpringApplication.run(LOTUSfillerApplication.class, args);
@@ -69,10 +71,11 @@ public class LOTUSfillerApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        System.out.println("Code version from 13th October 2020");
+        System.out.println("Code version from 15th March 2021");
 
 
         if (args.length > 0) {
+
 
             if(args[0].equals("recomputeMissing")){
                 fragmentCalculatorService.doWorkRecompute();
@@ -84,7 +87,22 @@ public class LOTUSfillerApplication implements CommandLineRunner {
                 }
 
             }
+            else if(args[0].equals("addMetadata")){
+                System.out.println("Adding metadata from " + args[1]);
+
+
+                readAndLoadMetadata.addWDandChemOntoData(args[1]);
+
+            }
+            else if(args[0].equals("cleanTaxonomies")){
+                readAndLoadMetadata.cleanDuplicateUncomplicatedTaxonomies();
+            }
             else if(args[0].equals("cleanRecomputeMissing")){
+
+                System.out.println("reading fragments");
+
+                fragmentReaderService.doWork(0, args[1]);
+                fragmentReaderService.doWork(1, args[2]);
 
 
                 System.out.println("Fragmenting everything from scratch");
@@ -102,7 +120,7 @@ public class LOTUSfillerApplication implements CommandLineRunner {
 
                 // Compute additional features
                 molecularFeaturesComputationService.doWork();
-                updaterService.updateSourceNaturalProductsParallelized(42);
+                //updaterService.updateSourceNaturalProductsParallelized(42);
 
 
             }
@@ -120,7 +138,7 @@ public class LOTUSfillerApplication implements CommandLineRunner {
             else if(args[0].equals("updateCNPid")){
                 System.out.println("Updating LOTUS ids");
                 createCNPidService.clearIDs();
-                createCNPidService.importIDs("coconut_ids_june2020.csv");
+                createCNPidService.importIDs("lotus_ids_march2021.txt");
                 createCNPidService.createIDforNewMolecules();
 
                 updaterService.updateSourceNaturalProductsParallelized(40);
@@ -148,14 +166,17 @@ public class LOTUSfillerApplication implements CommandLineRunner {
             }
             else if(args[0].equals("generateSDF")){
 
-                exportService.generateSDF("LOTUS_2021_02.sdf");
+                exportService.generateSDF("LOTUS_2021_03.sdf");
 
             }
-            else if(args[0].equals("generateTSV")){
-                exportService.generateTSV("LOTUS_2021_02.tsv");
+            else if(args[0].equals("generateSimpleSDF")){
+                exportService.generateSimpleSDF("LOTUS_2021_03_simple.sdf", "LOTUS_2021_03_metadata.tsv");
             }
-            else if(args[0].equals("onlyImportCoconutIds")){
-                int index_of_id_file = Arrays.asList(args).indexOf("onlyImportCoconutIds")+1;
+            else if(args[0].equals("generateTSV")){
+                exportService.generateTSV("LOTUS_2021_03.tsv");
+            }
+            else if(args[0].equals("onlyImportLotusIds")){
+                int index_of_id_file = Arrays.asList(args).indexOf("onlyImportLotusIds")+1;
                 createCNPidService.importIDs(args[index_of_id_file]);
                 createCNPidService.createIDforNewMolecules();
 
@@ -190,7 +211,7 @@ public class LOTUSfillerApplication implements CommandLineRunner {
                 if (canContinue) {
                     //insert in mongodb
 
-
+/*
                     mongoTemplate.getDb().drop();
 
                     readerService.readMolecularFileAndInsertInMongo(platinumFile);
@@ -213,10 +234,10 @@ public class LOTUSfillerApplication implements CommandLineRunner {
                     System.out.println("Done fragmenting natural products");
                     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                     System.out.println("at: "+formatter.format(new Date())+"\n");
-
+*/
                     if(Arrays.asList(args).contains("importLOTUSids")) {
                         //coconut_ids_april2020.csv
-                        System.out.println("importing  old COCONUT ids");
+                        System.out.println("importing  old LOTUS ids");
                         int index_of_id_file = Arrays.asList(args).indexOf("importLOTUSids")+1;
                         createCNPidService.clearIDs();
                         createCNPidService.importIDs(args[index_of_id_file]);
@@ -249,6 +270,14 @@ public class LOTUSfillerApplication implements CommandLineRunner {
 
 
                     molecularFeaturesComputationService.createPubchemBitCounts();
+
+                    if(Arrays.asList(args).contains("addMetadata")) {
+
+                        int index_of_meta_file = Arrays.asList(args).indexOf("addMetadata")+1;
+
+                        System.out.println("Adding metadata from " + args[index_of_meta_file]);
+                        readAndLoadMetadata.addWDandChemOntoData(args[index_of_meta_file]);
+                    }
 
 
 

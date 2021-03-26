@@ -135,7 +135,7 @@ public class NPUnificationService {
                         unp.taxonomyReferenceObjects.get(snpDOI).get(taxoDB).add(unt);
 
                     }else{
-                        ArrayList<UncomplicatedTaxonomy> taxoObjectsList = new ArrayList<>();
+                        HashSet<UncomplicatedTaxonomy> taxoObjectsList = new HashSet<>();
                         UncomplicatedTaxonomy unt = makeUncomplicatedTaxonomyFromSourceNP(snp.getTaxonomyReferenceObject(), unp);
                         unp.taxonomyReferenceObjects.get(snpDOI).put(taxoDB, taxoObjectsList);
                         unp.taxonomyReferenceObjects.get(snpDOI).get(taxoDB).add(unt);
@@ -145,8 +145,8 @@ public class NPUnificationService {
 
                 }else{
                     // need to add the new doi and the taxoDB and create arrayList and add the uncomplicated taxonomy
-                    Hashtable<String, ArrayList<UncomplicatedTaxonomy>> ht2 = new Hashtable<>();
-                    ArrayList<UncomplicatedTaxonomy> taxoObjectsList = new ArrayList<>();
+                    Hashtable<String, HashSet<UncomplicatedTaxonomy>> ht2 = new Hashtable<>();
+                    HashSet<UncomplicatedTaxonomy> taxoObjectsList = new HashSet<>();
                     UncomplicatedTaxonomy unt = makeUncomplicatedTaxonomyFromSourceNP(snp.getTaxonomyReferenceObject(), unp);
                     taxoObjectsList.add(unt);
                     ht2.put(taxoDB, taxoObjectsList);

@@ -2,6 +2,8 @@ package de.unijena.cheminf.lotusfiller.mongocollections;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
+
 public class TaxonomyReferenceObject {
 
     @Id
@@ -51,6 +53,55 @@ public class TaxonomyReferenceObject {
 
 
     public TaxonomyReferenceObject() {
+    }
+
+
+    @Override
+    public String toString(){
+
+        ArrayList taxNames = new ArrayList();
+        String prettyString = "";
+
+        if(this.domain != null){
+            taxNames.add(this.domain);
+        }
+
+        if(this.superkingdom != null){
+            taxNames.add(this.superkingdom);
+        }
+
+        if(this.kingdom != null){
+            taxNames.add(this.kingdom);
+        }
+
+        if (this.phylum != null){
+            taxNames.add(this.phylum);
+        }
+
+        if(this.classx != null){
+            taxNames.add(this.classx);
+        }
+
+        if(this.order != null){
+            taxNames.add(this.order);
+        }
+
+        if(this.family != null){
+            taxNames.add(this.family);
+        }
+
+        if(this.genus != null){
+            taxNames.add(this.genus);
+        }
+
+        if(this.species != null){
+            taxNames.add(this.species);
+        }
+
+
+
+        prettyString = String.join(" | ", taxNames);
+        return prettyString;
     }
 
     public String getId() {

@@ -135,7 +135,7 @@ public class CreateCNPidService {
                 unpWithoutId.add(np);
 
             }else if(np.lotus_id.startsWith("LTS")){
-                int coconut_tmp = Integer.parseInt( np.getLotus_id().split("NP")[1] );
+                int coconut_tmp = Integer.parseInt( np.getLotus_id().split("TS")[1] );
                 if(coconut_tmp>max_id ){
                     max_id = coconut_tmp;
                 }

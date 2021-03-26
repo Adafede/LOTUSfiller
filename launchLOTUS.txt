@@ -3,16 +3,30 @@ mongodump --db=NPOC2021 --out=NPOC2021 --excludeCollection lOTUSSourceNaturalPro
 
 
 
-
 #####################
+extract latest lotus ids:
+mongoexport --db NPOC2021 --collection lotusUniqueNaturalProduct --type=csv --fields lotus_id,inchikey --out lotus_ids_march2021.txt
 
 
+
+######################
+extract data for download
+
+java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar generateTSV
+java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar generateSDF
+
+
+mv LOTUS_2021_02.tsv LOTUS_2021_03.tsv
+mv LOTUS_2021_02.sdf LOTUS_2021_03.sdf
+
+cp LOTUS_2021_03.tsv lotus.smiles
+cp LOTUS_2021_03.sdf np.sdf
 
 
 ######################
 # run all from scratch
 
-java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar ~/Projects/NP/LOTUSonline/LOTUSfiller/data ~/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_without_sugar.txt ~/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_with_sugar.txt > latest.logs.october13.txt &
+java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar ~/Projects/NP/LOTUSonline/LOTUSfiller/data ~/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_without_sugar.txt ~/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_with_sugar.txt  > latest.logs.october13.txt &
 
 
 java -jar lotusfiller-0.0.1-SNAPSHOT.jar data fragments/fragment_without_sugar.txt fragments/fragment_with_sugar.txt > latest.logs.october13.txt &
@@ -21,10 +35,15 @@ disown xxxx
 
 
 # on ponder:
-java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/data/platinum.tsv /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_without_sugar.txt /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSonline/LOTUSfiller/fragments/fragment_with_sugar.txt > latest.logs.feb11.txt &
+java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/data/platinum.tsv /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_without_sugar.txt /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_with_sugar.txt importLOTUSids /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/lotus_ids_march2021.txt > latest.logs.mar12.txt &
 
 
 
+
+
+## add metadata 
+
+java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar  addMetadata /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/data/210223_frozen_metadata.tsv &
 
 #######################
 

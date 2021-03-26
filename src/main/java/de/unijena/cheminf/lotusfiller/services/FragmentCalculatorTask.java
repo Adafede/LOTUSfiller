@@ -148,12 +148,16 @@ public class FragmentCalculatorTask implements Runnable {
                                 newFragment.setSignature(f);
                                 newFragment.setScorenp(1.0);
                                 newFragment.presentInMolecules.add(np);
-                                foundFragment = fragmentRepository.save(newFragment);
+                                //foundFragment = fragmentRepository.save(newFragment);
+
+                                npl_score_with_sugar = npl_score_with_sugar + (newFragment.getScorenp() * fragmentsWithSugar.get(f));
                             } else {
                                 foundFragment.presentInMolecules.add(np);
+
+                                npl_score_with_sugar = npl_score_with_sugar + (foundFragment.getScorenp() * fragmentsWithSugar.get(f));
                             }
 
-                            npl_score_with_sugar = npl_score_with_sugar + (foundFragment.getScorenp() * fragmentsWithSugar.get(f));
+
 
                             np.addFragmentWithSugar(f, fragmentsWithSugar.get(f));
 
@@ -178,18 +182,20 @@ public class FragmentCalculatorTask implements Runnable {
                             newFragment.setSignature(f);
                             newFragment.setScorenp(1.0);
                             newFragment.presentInMolecules.add(np);
-                            foundFragment = fragmentRepository.save(newFragment);
+                            //foundFragment = fragmentRepository.save(newFragment);
+                            npl_score = npl_score + (newFragment.getScorenp() * fragmentsWithoutSugar.get(f));
                         } else {
                             foundFragment.presentInMolecules.add(np);
+                            npl_score = npl_score + (foundFragment.getScorenp() * fragmentsWithoutSugar.get(f));
                         }
 
-                        npl_score = npl_score + (foundFragment.getScorenp() * fragmentsWithoutSugar.get(f));
+
 
                         np.addFragment(f, fragmentsWithoutSugar.get(f));
 
                         //For the score without fragments starting by a H
                         if (!f.startsWith("[H]")) {
-                            npl_score_noh = npl_score_noh + (foundFragment.getScorenp() * fragmentsWithoutSugar.get(f));
+                            //npl_score_noh = npl_score_noh + (foundFragment.getScorenp() * fragmentsWithoutSugar.get(f));
                         }
                     }
 
@@ -233,10 +239,13 @@ public class FragmentCalculatorTask implements Runnable {
                             newFragment.setSignature(f);
                             newFragment.setScorenp(1.0);
                             newFragment.presentInMolecules.add(np);
-                            foundFragment = fragmentRepository.save(newFragment);
-                        }
+                            //foundFragment = fragmentRepository.save(newFragment);
 
-                        npl_score_with_sugar = npl_score_with_sugar + (foundFragment.getScorenp() * fragmentsWithSugar.get(f));
+                            npl_score_with_sugar = npl_score_with_sugar + (newFragment.getScorenp() * fragmentsWithSugar.get(f));
+                        }else {
+
+                            npl_score_with_sugar = npl_score_with_sugar + (foundFragment.getScorenp() * fragmentsWithSugar.get(f));
+                        }
 
                         np.addFragmentWithSugar(f, fragmentsWithSugar.get(f));
 

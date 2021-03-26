@@ -53,7 +53,7 @@ db.lotusUniqueNaturalProduct.createIndex( { "pfCounts.count" : 1 })
 
 java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/data/platinum.tsv /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_without_sugar.txt /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_with_sugar.txt > latest.logs.feb19.txt &
 
-
+java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar cleanRecomputeMissing /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_without_sugar.txt /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_with_sugar.txt
 
 indexes:
 
@@ -74,6 +74,7 @@ db.lotusUniqueNaturalProduct.createIndex( {lotus_id:1})
 db.lotusUniqueNaturalProduct.createIndex( {fragmentsWithSugar:"hashed"})
 db.lotusUniqueNaturalProduct.createIndex( {fragments:"hashed"})
 
+db.lotusUniqueNaturalProduct.createIndex( {traditional_name:"hashed"})
 
 db.runCommand(
   {
@@ -81,10 +82,10 @@ db.runCommand(
     indexes: [
         {
             key: {
-                iupac_name:"text", traditional_name:"text", allTaxa:"text"
+                iupac_name:"text", traditional_name:"text", allTaxa:"text", allChemClassifications:"text", allWikidataIds:"text"
             },
             name: "superTextIndex",
-	    weights: { name:10, synonyms:5  }
+	    weights: { traditional_name:10, allTaxa:5  }
         }
 
     ]
@@ -107,7 +108,17 @@ db.lotusUniqueNaturalProduct.createIndex( { "pfCounts.count" : 1 })
 
 
 db.fragment.createIndex({signature:1})
-db.fragment.createIndex({signature:1, withsugar:-1})
 
 
-
+db.fragment.aggregate([
+    { "$group": {
+        "_id": { "signature": "$signature", "withsugar":"$withsugar" },
+        "dups": { "$push": "$_id" },
+        "count": { "$sum": 1 }
+    }},
+    { "$match": { "count": { "$gt": 1 } }}
+]).forEach(function(doc) {
+    doc.dups.shift();
+    db.fragment.remove({ "_id": {"$in": doc.dups }});
+});
+db.fragment.createIndex({signature:1, withsugar:-1}, {unique:true, dropDups : true})
