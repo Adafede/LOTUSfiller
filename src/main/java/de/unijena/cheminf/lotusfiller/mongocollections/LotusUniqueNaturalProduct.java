@@ -15,7 +15,7 @@ public class LotusUniqueNaturalProduct {
         this.fragments = new Hashtable<>();
         this.fragmentsWithSugar = new Hashtable<>();
         this.ertlFunctionalFragments = new Hashtable<>();
-        this.allTaxa = new HashSet<>();
+        this.allTaxa = new HashSet<>(); //COMMENT AR: I hate that field. I got it is for the search but many people will then misuse it.
         this.allChemClassifications = new HashSet<>();
         this.allWikidataIds = new HashSet<>();
     }
@@ -33,21 +33,17 @@ public class LotusUniqueNaturalProduct {
 
     public Integer heavy_atom_number;
 
-
     public String smiles;
 
     public String inchi;
 
     public String inchikey;
 
-
-
     public String inchi2D;
 
     public String inchikey2D;
 
     public String smiles2D;
-
 
     public String sugar_free_smiles;
 
@@ -80,12 +76,6 @@ public class LotusUniqueNaturalProduct {
 
     public Double molecular_weight;
 
-
-
-
-
-
-
     public Double npl_noh_score;
 
     public Double npl_score;
@@ -104,7 +94,6 @@ public class LotusUniqueNaturalProduct {
 
     public Integer min_number_of_rings;
 
-
     public Integer number_repeated_fragments;
 
     public Integer sugar_free_heavy_atom_number;
@@ -114,9 +103,6 @@ public class LotusUniqueNaturalProduct {
     public Integer total_atom_number;
 
     public Integer bond_count;
-
-
-
 
     public HashSet<ArrayList<String>> xrefs ; // in each arrayList there is the source,  idInSource,  and the URL
 
@@ -132,13 +118,9 @@ public class LotusUniqueNaturalProduct {
     public Hashtable<String, Integer> ertlFunctionalFragments;
     public Hashtable<String, Integer> ertlFunctionalFragmentsPseudoSmiles;
 
-
-
     public ArrayList<Integer> pubchemFingerprint;
 
     public HashMap<Integer, ArrayList<Integer>> pubfp;
-
-
 
     public PubchemFingerPrintsCounts pfCounts;
 
@@ -175,8 +157,6 @@ public class LotusUniqueNaturalProduct {
 
     // All wikidata identifiers
     public HashSet<String> allWikidataIds = null;
-
-
 
 
     // Symmetry measures
