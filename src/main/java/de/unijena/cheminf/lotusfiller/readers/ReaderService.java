@@ -20,7 +20,6 @@ public class ReaderService {
 
     private List<String> molecularFiles;
 
-
     public boolean directoryContainsMolecularFiles(String directory){
         boolean molecularFileFound = false;
 

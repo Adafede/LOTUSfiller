@@ -14,7 +14,6 @@ public class LotusUniqueNaturalProductRepositoryImpl implements LotusUniqueNatur
         this.mongoTemplate = mongoTemplate;
     }
 
-
     @Override
     public List<String> findAllLotusIds() {
 
@@ -27,9 +26,6 @@ public class LotusUniqueNaturalProductRepositoryImpl implements LotusUniqueNatur
 
     @Override
     public List<String> findAllInchiKeys() {
-
-
-
 
         List<String> inchikeys_list = mongoTemplate.query(LotusUniqueNaturalProduct.class)
                 .distinct("inchikey3D")

@@ -17,19 +17,13 @@ public class TaxonomyReferenceObject {
 
     String organism_url;
 
-
     String ranks;
 
     String all_taxonomy;
 
-
-
-
     String referenceDOI;
 
     String referenceTitle;
-
-
 
     String domain = null;
 
@@ -48,9 +42,6 @@ public class TaxonomyReferenceObject {
     String genus = null;
 
     String species = null;
-
-
-
 
     public TaxonomyReferenceObject() {
     }

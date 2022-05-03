@@ -13,5 +13,4 @@ public class PubFingerprintsCounts {
 
     public Integer count;
 
-
 }

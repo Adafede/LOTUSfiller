@@ -15,29 +15,23 @@ import java.util.ArrayList;
 @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 public class ReadWorker implements Runnable {
 
-
     private File fileToRead;
     public boolean acceptFileFormat = false;
     private String submittedFileFormat ;
 
     private String fileSource;
 
-
     private ArrayList<IAtomContainer> molecules ;
 
     private Reader reader = null ;
 
-
     NPDatabaseRepository npDatabaseRepository;
-
 
     /*public ReadWorker(File file){
         this.fileToRead = file;
         System.out.println("\n\n Working on: "+fileToRead.getAbsolutePath() + "\n\n");
 
     }*/
-
-
 
 
     public boolean startWorker(){
@@ -79,14 +73,8 @@ public class ReadWorker implements Runnable {
             this.submittedFileFormat="csv";
             return true;
         }
-
-
         return false;
     }
-
-
-
-
 
 
     /*public String returnSource(){
@@ -96,7 +84,6 @@ public class ReadWorker implements Runnable {
 
     @Override
     public void run() {
-
 
         npDatabaseRepository = BeanUtil.getBean(NPDatabaseRepository.class);
 
@@ -108,14 +95,7 @@ public class ReadWorker implements Runnable {
 
         npDatabaseRepository.save(newDB);
 
-
-
-
-
-
-
         reader = new CSVReader();
-
 
         this.reader.readFile(this.fileToRead);
 
