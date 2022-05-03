@@ -4,11 +4,11 @@ To fill all from scratch:
 
 ```
 java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar ~/Projects/NP/LOTUSonline/LOTUSfiller/data/platinum.part.tsv ~/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_without_sugar.txt ~/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_with_sugar.txt > latest.logs.feb9.txt &
-
 ````
 
 on Ponder:
 
+```
 db.lotusUniqueNaturalProduct.createIndex( {inchi:"hashed"})
 db.lotusUniqueNaturalProduct.createIndex( {inchikey:1})
 db.lotusUniqueNaturalProduct.createIndex( {smiles: "hashed"})
@@ -19,7 +19,9 @@ db.lotusUniqueNaturalProduct.createIndex( {molecular_formula:1})
 db.lotusUniqueNaturalProduct.createIndex( {lotus_id:1})
 db.lotusUniqueNaturalProduct.createIndex( {fragmentsWithSugar:"hashed"})
 db.lotusUniqueNaturalProduct.createIndex( {fragments:"hashed"})
+```
 
+```
 db.runCommand(
 {
 createIndexes: 'lotusUniqueNaturalProduct',
@@ -44,13 +46,19 @@ db.lotusUniqueNaturalProduct.createIndex( { pubchemBits : "hashed" } )
 db.lotusUniqueNaturalProduct.createIndex( {deep_smiles: "hashed"})
 db.lotusUniqueNaturalProduct.createIndex( { "pfCounts.bits" :1} )
 db.lotusUniqueNaturalProduct.createIndex( { "pfCounts.count" : 1 })
+```
 
+```
 java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/data/platinum.tsv /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_without_sugar.txt /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_with_sugar.txt > latest.logs.feb19.txt &
+```
 
+```
 java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar cleanRecomputeMissing /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_without_sugar.txt /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_with_sugar.txt
+```
 
 indexes:
 
+```
 db.lOTUSSourceNaturalProduct.createIndex( {inchi3D:"hashed"})
 db.lOTUSSourceNaturalProduct.createIndex( {inchikey3D: "hashed"})
 db.lOTUSSourceNaturalProduct.createIndex( {inchikey2D:1})
@@ -69,7 +77,9 @@ db.lotusUniqueNaturalProduct.createIndex( {fragmentsWithSugar:"hashed"})
 db.lotusUniqueNaturalProduct.createIndex( {fragments:"hashed"})
 
 db.lotusUniqueNaturalProduct.createIndex( {traditional_name:"hashed"})
+```
 
+```
 db.runCommand(
 {
 createIndexes: 'lotusUniqueNaturalProduct',
@@ -109,3 +119,5 @@ doc.dups.shift();
 db.fragment.remove({ "_id": {"$in": doc.dups }});
 });
 db.fragment.createIndex({signature:1, withsugar:-1}, {unique:true, dropDups : true})
+```
+
