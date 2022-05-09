@@ -158,7 +158,7 @@ public class ExportService {
                     IAtomContainer ac = atomContainerToUniqueNaturalProductService.createAtomContainer(np);
 
                     // add most of molecular descriptors and available metadata
-                    ac.setProperty("coconut_id", np.lotus_id);
+                    ac.setProperty("coconut_id", np.lotus_id); //COMMENT AR is this correct?
                     ac.setProperty("inchi", np.inchi);
                     ac.setProperty("inchikey", np.inchikey);
                     ac.setProperty("SMILES", np.smiles);
