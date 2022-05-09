@@ -237,7 +237,7 @@ public class LOTUSfillerApplication implements CommandLineRunner {
 */
                     if(Arrays.asList(args).contains("importLOTUSids")) {
                         //coconut_ids_april2020.csv
-                        System.out.println("importing  old LOTUS ids");
+                        System.out.println("importing old LOTUS ids");
                         int index_of_id_file = Arrays.asList(args).indexOf("importLOTUSids")+1;
                         createCNPidService.clearIDs();
                         createCNPidService.importIDs(args[index_of_id_file]);
