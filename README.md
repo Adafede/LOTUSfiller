@@ -3,10 +3,24 @@
 To fill all from scratch:
 
 ```
-java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar ~/Projects/NP/LOTUSonline/LOTUSfiller/data/platinum.part.tsv ~/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_without_sugar.txt ~/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_with_sugar.txt > latest.logs.feb9.txt &
-````
+docker run -it -p 27017:27017 mongo 
+```
 
-on Ponder:
+```
+mvn package
+```
+
+```
+java -jar target/lotusfiller-0.0.2-SNAPSHOT.jar data/test.tsv fragments/fragment_without_sugar.txt fragments/fragment_with_sugar.txt > log/latest.logs.may16.txt
+```
+
+```
+mongo --port 27017
+```
+
+```
+use NPOC2021
+```
 
 ```
 db.lotusUniqueNaturalProduct.createIndex( {inchi:"hashed"})
@@ -46,14 +60,23 @@ db.lotusUniqueNaturalProduct.createIndex( { pubchemBits : "hashed" } )
 db.lotusUniqueNaturalProduct.createIndex( {deep_smiles: "hashed"})
 db.lotusUniqueNaturalProduct.createIndex( { "pfCounts.bits" :1} )
 db.lotusUniqueNaturalProduct.createIndex( { "pfCounts.count" : 1 })
+exit
 ```
 
 ```
-java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/data/platinum.tsv /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_without_sugar.txt /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_with_sugar.txt > latest.logs.feb19.txt &
+java -jar target/lotusfiller-0.0.2-SNAPSHOT.jar data/test.tsv fragments/fragment_without_sugar.txt fragments/fragment_with_sugar.txt > log/latest.logs.may16_2.txt
 ```
 
 ```
-java -Xmx16288m -jar lotusfiller-0.0.1-SNAPSHOT.jar cleanRecomputeMissing /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_without_sugar.txt /media/data_drive_big/maria/Projects/NP/LOTUSonline/LOTUSfiller/fragments/fragment_with_sugar.txt
+java -jar target/lotusfiller-0.0.2-SNAPSHOT.jar cleanRecomputeMissing fragments/fragment_without_sugar.txt fragments/fragment_with_sugar.txt
+```
+
+```
+mongo --port 27017
+```
+
+```
+use NPOC2021
 ```
 
 indexes:
@@ -119,5 +142,5 @@ doc.dups.shift();
 db.fragment.remove({ "_id": {"$in": doc.dups }});
 });
 db.fragment.createIndex({signature:1, withsugar:-1}, {unique:true, dropDups : true})
+exit
 ```
-
