@@ -36,7 +36,7 @@ public class UpdaterService {
         for(LOTUSSourceNaturalProduct snp : allSourceNaturalProducts){
             String unpid = snp.getLotusUniqueNaturalProduct().getId();
             Optional<LotusUniqueNaturalProduct> unp = lotusUniqueNaturalProductRepository.findById(unpid);
-            if(unp.isPresent()){
+            if (unp.isPresent()){
                 LotusUniqueNaturalProduct np = unp.get();
                 snp.setLotusUniqueNaturalProduct(np);
                 LOTUSSourceNaturalProductRepository.save(snp);

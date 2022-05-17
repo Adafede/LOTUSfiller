@@ -32,13 +32,13 @@ public class NamingService {
 
         LotusUniqueNaturalProduct np = lotusUniqueNaturalProductRepository.findByLotus_id(lotus_id).get(0);
 
-        if(np != null) {
+        if (np != null) {
 
-            if(np.traditional_name != null && np.traditional_name != ""){
+            if (np.traditional_name != null && np.traditional_name != ""){
 
                 np.traditional_name = np.traditional_name.toLowerCase();
 
-                if(!np.synonyms.isEmpty()){
+                if (!np.synonyms.isEmpty()){
                     List<String> lowSynonyms = np.synonyms.stream()
                             .map(String::toLowerCase)
                             .collect(Collectors.toList());

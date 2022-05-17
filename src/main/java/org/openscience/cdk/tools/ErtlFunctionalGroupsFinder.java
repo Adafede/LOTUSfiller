@@ -95,7 +95,7 @@ public class ErtlFunctionalGroupsFinder {
 
         public IBond createBond(IAtom targetAtom, IAtom cAtom) {
             IBond bond = targetAtom.getBuilder().newInstance(IBond.class);
-            if(bondIndex == 0) {
+            if (bondIndex == 0) {
                 bond.setAtoms(new IAtom[] {cAtom, targetAtom});
             }
             else {
@@ -157,7 +157,7 @@ public class ErtlFunctionalGroupsFinder {
     public List<IAtomContainer> find(IAtomContainer container, boolean clone){
         // work with a clone?
         IAtomContainer mol;
-        if(clone){
+        if (clone){
             try {
                 mol = container.clone();
             } catch (CloneNotSupportedException e) {
@@ -181,7 +181,7 @@ public class ErtlFunctionalGroupsFinder {
         List<IAtomContainer> groups = extractGroups(mol);
 
         // handle environment
-        if(mode == Mode.DEFAULT) {
+        if (mode == Mode.DEFAULT) {
             expandGeneralizedEnvironments(groups);
         }
         else if (mode == Mode.NO_GENERALIZATION) {
@@ -207,7 +207,7 @@ public class ErtlFunctionalGroupsFinder {
      * @param molecule Molecule with atoms to mark
      */
     private void markAtoms(IAtomContainer molecule) {
-        if(isDbg()) log.debug("########## Starting search for atoms to mark ... ##########");
+        if (isDbg()) log.debug("########## Starting search for atoms to mark ... ##########");
 
         // store marked atoms
         markedAtoms = Sets.newHashSetWithExpectedSize(molecule.getAtomCount());
@@ -216,13 +216,13 @@ public class ErtlFunctionalGroupsFinder {
 
         for(int idx = 0; idx < molecule.getAtomCount(); idx++) {
             // skip atoms that already got marked in a previous iteration
-            if(markedAtoms.contains(idx)) {
+            if (markedAtoms.contains(idx)) {
                 continue;
             }
             IAtom cAtom = molecule.getAtom(idx);
             // skip aromatic atoms but add them to set
-            if(cAtom.isAromatic()) {
-                if(isHeteroatom(cAtom)) {
+            if (cAtom.isAromatic()) {
+                if (isHeteroatom(cAtom)) {
                     aromaticHeteroAtoms.put(idx, false);
                 }
                 continue;
@@ -231,7 +231,7 @@ public class ErtlFunctionalGroupsFinder {
             int atomicNr = cAtom.getAtomicNumber();
 
             // if C...
-            if(atomicNr == 6) {
+            if (atomicNr == 6) {
                 boolean isMarked = false;		// to detect if foor loop ran with or without marking the C atom
                 int oNSCounter = 0;				// count for the number of connected O, N & S atoms
                 for(int connectedIdx : adjList[idx]) {
@@ -239,39 +239,39 @@ public class ErtlFunctionalGroupsFinder {
                     IBond connectedBond = bondMap.get(idx, connectedIdx);
 
                     // if connected to Heteroatom or C in aliphatic double or triple bond... [CONDITIONS 2.1 & 2.2]
-                    if(connectedAtom.getAtomicNumber() != 1 && ((connectedBond.getOrder() == Order.DOUBLE
+                    if (connectedAtom.getAtomicNumber() != 1 && ((connectedBond.getOrder() == Order.DOUBLE
                             || connectedBond.getOrder() == Order.TRIPLE) && !connectedBond.isAromatic())) {
 
                         // set the connected atom as marked
-                        if(markedAtoms.add(connectedIdx)) {
+                        if (markedAtoms.add(connectedIdx)) {
                             String connectedAtomCondition = connectedAtom.getAtomicNumber() == 6 ? "2.1/2.2" : "1";
-                            if(isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition %s",
+                            if (isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition %s",
                                     connectedIdx, connectedAtom.getSymbol(), connectedAtomCondition));
                         }
 
                         // set the current atom as marked and break out of connected atoms
-                        if(isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 2.1/2.2",
+                        if (isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 2.1/2.2",
                                 idx, cAtom.getSymbol()));
                         isMarked = true;
 
                         // but check for carbonyl-C before break
-                        if(connectedAtom.getAtomicNumber() == 8 && connectedBond.getOrder() == Order.DOUBLE
+                        if (connectedAtom.getAtomicNumber() == 8 && connectedBond.getOrder() == Order.DOUBLE
                                 && adjList[idx].length == 3) {
-                            if(isDbg()) log.debug("                     - was flagged as Carbonly-C");
+                            if (isDbg()) log.debug("                     - was flagged as Carbonly-C");
                             cAtom.setProperty(CARBONYL_C_MARKER, true);
                         }
 
                         break;
                     }
                     // if connected to O/N/S in single bond...
-                    else if((connectedAtom.getAtomicNumber() == 7
+                    else if ((connectedAtom.getAtomicNumber() == 7
                             || connectedAtom.getAtomicNumber() == 8
                             || connectedAtom.getAtomicNumber() == 16)
                             && connectedBond.getOrder() == Order.SINGLE){
                         // if connected O/N/S is not aromatic...
-                        if(!connectedAtom.isAromatic()) {
+                        if (!connectedAtom.isAromatic()) {
                             // set the connected O/N/S atom as marked
-                            if(isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 1",
+                            if (isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 1",
                                     connectedIdx, connectedAtom.getSymbol()));
                             markedAtoms.add(connectedIdx);
 
@@ -279,16 +279,16 @@ public class ErtlFunctionalGroupsFinder {
                             boolean isAllSingleBonds = true;
                             for(int connectedInSphere2Idx : adjList[connectedIdx]) {
                                 IBond sphere2Bond = bondMap.get(connectedIdx, connectedInSphere2Idx);
-                                if(sphere2Bond.getOrder() != Order.SINGLE) {
+                                if (sphere2Bond.getOrder() != Order.SINGLE) {
                                     isAllSingleBonds = false;
                                     break;
                                 }
                             }
-                            if(isAllSingleBonds) {
+                            if (isAllSingleBonds) {
                                 oNSCounter++;
-                                if(oNSCounter > 1 && adjList[idx].length + cAtom.getImplicitHydrogenCount() == 4) {
+                                if (oNSCounter > 1 && adjList[idx].length + cAtom.getImplicitHydrogenCount() == 4) {
                                     // set as marked and break out of connected atoms
-                                    if(isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 2.3",
+                                    if (isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 2.3",
                                             idx, cAtom.getSymbol()));
                                     isMarked = true;
                                     break;
@@ -298,19 +298,19 @@ public class ErtlFunctionalGroupsFinder {
                         // if part of oxirane, aziridine and thiirane ring... [CONDITION 2.4]
                         for(int connectedInSphere2Idx : adjList[connectedIdx]) {
                             IAtom connectedInSphere2Atom = molecule.getAtom(connectedInSphere2Idx);
-                            if(connectedInSphere2Atom.getAtomicNumber() == 6) {
+                            if (connectedInSphere2Atom.getAtomicNumber() == 6) {
                                 for(int connectedInSphere3Idx : adjList[connectedInSphere2Idx]) {
                                     IAtom connectedInSphere3Atom = molecule.getAtom(connectedInSphere3Idx);
-                                    if(connectedInSphere3Atom.equals(cAtom)) {
+                                    if (connectedInSphere3Atom.equals(cAtom)) {
                                         // set connected atoms as marked
-                                        if(isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 2.4",
+                                        if (isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 2.4",
                                                 connectedInSphere2Idx, connectedInSphere2Atom.getSymbol()));
-                                        if(isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 2.4",
+                                        if (isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 2.4",
                                                 connectedInSphere3Idx, connectedInSphere3Atom.getSymbol()));
                                         markedAtoms.add(connectedInSphere2Idx);
                                         markedAtoms.add(connectedInSphere3Idx);
                                         // set current atom as marked and break out of connected atoms
-                                        if(isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 2.4",
+                                        if (isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 2.4",
                                                 idx, cAtom.getSymbol()));
                                         isMarked = true;
                                         break;
@@ -320,7 +320,7 @@ public class ErtlFunctionalGroupsFinder {
                         }
                     }
                 }
-                if(isMarked) {
+                if (isMarked) {
                     markedAtoms.add(idx);
                     continue;
                 }
@@ -338,7 +338,7 @@ public class ErtlFunctionalGroupsFinder {
                 }
 
 
-                if(connectedAtom.getImplicitHydrogenCount() == null) {
+                if (connectedAtom.getImplicitHydrogenCount() == null) {
                     connectedAtom.setImplicitHydrogenCount(1);
                 }
                 else {
@@ -348,12 +348,12 @@ public class ErtlFunctionalGroupsFinder {
             }
             // if heteroatom... (CONDITION 1)
             else {
-                if(isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 1", idx, cAtom.getSymbol()));
+                if (isDbg()) log.debug(String.format("Marking Atom #%d (%s) - Met condition 1", idx, cAtom.getSymbol()));
                 markedAtoms.add(idx);
                 continue;
             }
         }
-        if(isDbg()) log.debug(String.format("########## End of search. Marked %d/%d atoms. ##########", markedAtoms.size(), molecule.getAtomCount()));
+        if (isDbg()) log.debug(String.format("########## End of search. Marked %d/%d atoms. ##########", markedAtoms.size(), molecule.getAtomCount()));
     }
 
     /**
@@ -364,7 +364,7 @@ public class ErtlFunctionalGroupsFinder {
      * @return a list of all functional groups (including "environments") extracted from the molecule
      */
     private List<IAtomContainer> extractGroups(IAtomContainer molecule) {
-        if(isDbg()) log.debug("########## Starting identification & extraction of functional groups... ##########");
+        if (isDbg()) log.debug("########## Starting identification & extraction of functional groups... ##########");
 
         environmentsMap = Maps.newHashMapWithExpectedSize(molecule.getAtomCount());
         int[] atomIdxToFGMap = new int[molecule.getAtomCount()];
@@ -377,7 +377,7 @@ public class ErtlFunctionalGroupsFinder {
 
             // get next markedAtom as the starting node for the search
             int beginIdx = markedAtoms.iterator().next();
-            if(isDbg()) log.debug(String.format("Searching new functional group from atom #%d (%s)...", beginIdx,  molecule.getAtom(beginIdx).getSymbol()));
+            if (isDbg()) log.debug(String.format("Searching new functional group from atom #%d (%s)...", beginIdx,  molecule.getAtom(beginIdx).getSymbol()));
 
             // do a BFS from there
             Queue<Integer> queue = new ArrayDeque<>();
@@ -387,13 +387,13 @@ public class ErtlFunctionalGroupsFinder {
                 int currentIdx = queue.poll();
 
                 // we are only interested in marked atoms that are not yet included in a group
-                if(!markedAtoms.contains(currentIdx)){
+                if (!markedAtoms.contains(currentIdx)){
                     continue;
                 }
 
                 // if it isn't...
                 IAtom currentAtom = molecule.getAtom(currentIdx);
-                if(isDbg()) log.debug(String.format("	visiting marked atom: #%d (%s)", currentIdx, currentAtom.getSymbol()));
+                if (isDbg()) log.debug(String.format("	visiting marked atom: #%d (%s)", currentIdx, currentAtom.getSymbol()));
 
                 // add its index to the functional group
                 atomIdxToFGMap[currentIdx] = fGroupIdx;
@@ -404,20 +404,20 @@ public class ErtlFunctionalGroupsFinder {
                 List<EnvironmentalC> currentEnvironment = new ArrayList<>();
                 for(int connectedIdx : adjList[currentIdx]) {
                     // add connected marked atoms to queue
-                    if(markedAtoms.contains(connectedIdx)) {
+                    if (markedAtoms.contains(connectedIdx)) {
                         queue.add(connectedIdx);
                         continue;
                     }
 
                     // ignore already handled connected atoms
-                    if(atomIdxToFGMap[connectedIdx] >= 0){
+                    if (atomIdxToFGMap[connectedIdx] >= 0){
                         continue;
                     }
 
                     // add unmarked connected aromatic heteroatoms
                     IAtom connectedAtom = molecule.getAtom(connectedIdx);
-                    if(isHeteroatom(connectedAtom) && connectedAtom.isAromatic()) {
-                        if(isDbg()) log.debug("	   added connected aromatic heteroatom " + connectedAtom.getSymbol());
+                    if (isHeteroatom(connectedAtom) && connectedAtom.isAromatic()) {
+                        if (isDbg()) log.debug("	   added connected aromatic heteroatom " + connectedAtom.getSymbol());
                         atomIdxToFGMap[connectedIdx] = fGroupIdx;
                         // note that this aromatic heteroatom has been added to a group
                         aromaticHeteroAtoms.put(connectedIdx, true);
@@ -428,7 +428,7 @@ public class ErtlFunctionalGroupsFinder {
 
                     EnvironmentCalCType type;
                     if (connectedAtom.getAtomicNumber() == 6) {
-                        if(connectedAtom.isAromatic())
+                        if (connectedAtom.isAromatic())
                             type = EnvironmentCalCType.C_AROMATIC;
                         else
                             type = EnvironmentCalCType.C_ALIPHATIC;
@@ -442,33 +442,33 @@ public class ErtlFunctionalGroupsFinder {
                 environmentsMap.put(currentAtom, currentEnvironment);
 
                 // debug logging
-                if(isDbg()) {
+                if (isDbg()) {
                     int cAromCount = 0, cAliphCount = 0;
                     for(EnvironmentalC comp : currentEnvironment) {
-                        if(comp.getType() == EnvironmentCalCType.C_AROMATIC)
+                        if (comp.getType() == EnvironmentCalCType.C_AROMATIC)
                             cAromCount++;
-                        else if(comp.getType() == EnvironmentCalCType.C_ALIPHATIC)
+                        else if (comp.getType() == EnvironmentCalCType.C_ALIPHATIC)
                             cAliphCount++;
                     }
                     log.debug(String.format("	   logged marked atom's environment: C_ar:%d, C_al:%d (and %d implicit hydrogens)", cAromCount, cAliphCount, currentAtom.getImplicitHydrogenCount()));
                 }
             }
 
-            if(isDbg()) log.debug("	search completed.");
+            if (isDbg()) log.debug("	search completed.");
         }
 
         // also create FG for lone aromatic heteroatoms, not connected to a FG yet.
         for(int atomIdx : aromaticHeteroAtoms.keySet()) {
-            if(!aromaticHeteroAtoms.get(atomIdx)) {
+            if (!aromaticHeteroAtoms.get(atomIdx)) {
                 fGroupIdx++;
                 atomIdxToFGMap[atomIdx] = fGroupIdx;
-                if(isDbg()) log.debug("Created FG for lone aromatic heteroatom: " + molecule.getAtom(atomIdx).getSymbol());
+                if (isDbg()) log.debug("Created FG for lone aromatic heteroatom: " + molecule.getAtom(atomIdx).getSymbol());
             }
         }
 
         List<IAtomContainer> fGs = partitionIntoGroups(molecule, atomIdxToFGMap, fGroupIdx + 1);
 
-        if(isDbg()) log.debug(String.format("########## Found & extracted %d functional groups. ##########", fGroupIdx + 1));
+        if (isDbg()) log.debug(String.format("########## Found & extracted %d functional groups. ##########", fGroupIdx + 1));
         return fGs;
     }
 
@@ -479,58 +479,58 @@ public class ErtlFunctionalGroupsFinder {
      * @param fGroups the list of functional groups including "environments"
      */
     private void expandGeneralizedEnvironments(List<IAtomContainer> fGroups){
-        if(isDbg()) log.debug("########## Starting generalization of functional groups... ##########");
+        if (isDbg()) log.debug("########## Starting generalization of functional groups... ##########");
 
         for(IAtomContainer fGroup : fGroups) {
             int atomCount = fGroup.getAtomCount();
 
-            if(isDbg()) log.debug(String.format("Generalizing functional group (%d atoms)...", atomCount));
+            if (isDbg()) log.debug(String.format("Generalizing functional group (%d atoms)...", atomCount));
 
             // prechecking for special cases...
-            if(fGroup.getAtomCount() == 1) {
+            if (fGroup.getAtomCount() == 1) {
                 IAtom atom = fGroup.getAtom(0);
                 List<EnvironmentalC> environment = environmentsMap.get(atom);
 
-                if(environment != null) {
+                if (environment != null) {
                     int envCCount = environment.size();
 
                     // for H2N-C_env & HO-C_env -> do not replace H & C_env by R!
-                    if((atom.getAtomicNumber() == 8 && envCCount == 1)
+                    if ((atom.getAtomicNumber() == 8 && envCCount == 1)
                             || (atom.getAtomicNumber() == 7 && envCCount == 1)){
-                        if(isDbg()) log.debug(String.format("   - found single atomic N or O FG with one env. C. Expanding environment...", atom.getSymbol()));
+                        if (isDbg()) log.debug(String.format("   - found single atomic N or O FG with one env. C. Expanding environment...", atom.getSymbol()));
                         expandEnvironment(atom, fGroup);
 
                         int hCount = atom.getImplicitHydrogenCount();
-                        if(hCount != 0) {
-                            if(isDbg()) log.debug(String.format("   - adding %d hydrogens...", hCount));
+                        if (hCount != 0) {
+                            if (isDbg()) log.debug(String.format("   - adding %d hydrogens...", hCount));
                             addHydrogens(atom, hCount, fGroup);
                             atom.setImplicitHydrogenCount(0);
                         }
                         continue;
                     }
                     // for HN-(C_env)-C_env & HS-C_env -> do not replace H by R! (only C_env!)
-                    if((atom.getAtomicNumber() == 7 && envCCount == 2)
+                    if ((atom.getAtomicNumber() == 7 && envCCount == 2)
                             || (atom.getAtomicNumber() == 16 && envCCount == 1)) {
-                        if(isDbg()) log.debug("   - found sec. amine or simple thiol");
+                        if (isDbg()) log.debug("   - found sec. amine or simple thiol");
                         int hCount = atom.getImplicitHydrogenCount();
-                        if(hCount != 0) {
-                            if(isDbg()) log.debug(String.format("   - adding %d hydrogens...", hCount));
+                        if (hCount != 0) {
+                            if (isDbg()) log.debug(String.format("   - adding %d hydrogens...", hCount));
                             addHydrogens(atom, hCount, fGroup);
                             atom.setImplicitHydrogenCount(0);
                         }
-                        if(isDbg()) log.debug("   - expanding environment...");
+                        if (isDbg()) log.debug("   - expanding environment...");
                         expandEnvironmentGeneralized(atom, fGroup);
                         continue;
                     }
                 }
-                else if(isHeteroatom(atom)) {
+                else if (isHeteroatom(atom)) {
                     int rAtomCount = atom.getValency();
                     Integer hCount = atom.getImplicitHydrogenCount();
-                    if(hCount != null && hCount != 0) {
+                    if (hCount != null && hCount != 0) {
                         atom.setImplicitHydrogenCount(0);
                     }
                     String atomTypeName = atom.getAtomTypeName();
-                    if(isDbg()) log.debug(String.format("   - found single aromatic heteroatom (%s, Atomtype %s). Adding %d R-Atoms...", atom.getSymbol(), atomTypeName, rAtomCount));
+                    if (isDbg()) log.debug(String.format("   - found single aromatic heteroatom (%s, Atomtype %s). Adding %d R-Atoms...", atom.getSymbol(), atomTypeName, rAtomCount));
                     addRAtoms(atom, rAtomCount, fGroup);
                     continue;
                 }
@@ -543,40 +543,40 @@ public class ErtlFunctionalGroupsFinder {
             for(IAtom atom : fGroupAtoms) {
                 List<EnvironmentalC> environment = environmentsMap.get(atom);
 
-                if(environment == null) {
-                    if(atom.getImplicitHydrogenCount() != 0) {
+                if (environment == null) {
+                    if (atom.getImplicitHydrogenCount() != 0) {
                         atom.setImplicitHydrogenCount(0);
                     }
                     int rAtomCount = atom.getValency() - 1;
-                    if(isDbg()) log.debug(String.format("   - found connected aromatic heteroatom (%s). Adding %d R-Atoms...", atom.getSymbol(), rAtomCount));
+                    if (isDbg()) log.debug(String.format("   - found connected aromatic heteroatom (%s). Adding %d R-Atoms...", atom.getSymbol(), rAtomCount));
                     addRAtoms(atom, rAtomCount, fGroup);
                 }
 
                 // processing carbons...
-                if(atom.getAtomicNumber() == 6) {
-                    if(atom.getProperty(CARBONYL_C_MARKER) == null) {
-                        if(atom.getImplicitHydrogenCount() != 0) {
+                if (atom.getAtomicNumber() == 6) {
+                    if (atom.getProperty(CARBONYL_C_MARKER) == null) {
+                        if (atom.getImplicitHydrogenCount() != 0) {
                             atom.setImplicitHydrogenCount(0);
                         }
-                        if(isDbg()) log.debug("   - ignoring environment for marked carbon atom");
+                        if (isDbg()) log.debug("   - ignoring environment for marked carbon atom");
                         continue;
                     }
                     else {
-                        if(isDbg()) log.debug("   - found carbonyl-carbon. Expanding environment...");
+                        if (isDbg()) log.debug("   - found carbonyl-carbon. Expanding environment...");
                         expandEnvironmentGeneralized(atom, fGroup);
                         continue;
                     }
                 }
                 // processing heteroatoms...
                 else {
-                    if(isDbg()) log.debug(String.format("   - found heteroatom (%s). Expanding environment...", atom.getSymbol()));
+                    if (isDbg()) log.debug(String.format("   - found heteroatom (%s). Expanding environment...", atom.getSymbol()));
                     expandEnvironmentGeneralized(atom, fGroup);
                     continue;
                 }
             }
         }
 
-        if(isDbg()) log.debug("########## Generalization of functional groups completed. ##########");
+        if (isDbg()) log.debug("########## Generalization of functional groups completed. ##########");
     }
 
     /**
@@ -585,35 +585,35 @@ public class ErtlFunctionalGroupsFinder {
      * @param fGroups the list of functional groups including "environments"
      */
     private void expandFullEnvironments(List<IAtomContainer> fGroups) {
-        if(isDbg()) log.debug("########## Starting expansion of full environments for functional groups... ##########");
+        if (isDbg()) log.debug("########## Starting expansion of full environments for functional groups... ##########");
 
         for(IAtomContainer fGroup : fGroups) {
             int atomCount = fGroup.getAtomCount();
-            if(isDbg()) log.debug(String.format("Expanding environment on functional group (%d atoms)...", atomCount));
+            if (isDbg()) log.debug(String.format("Expanding environment on functional group (%d atoms)...", atomCount));
 
             for(int i = 0; i < atomCount; i++) {
                 IAtom atom = fGroup.getAtom(i);
 
-                if(isDbg()) log.debug(String.format(" - Atom #%d:%   - Expanding environment...", i));
+                if (isDbg()) log.debug(String.format(" - Atom #%d:%   - Expanding environment...", i));
                 expandEnvironment(atom, fGroup);
 
                 int hCount = atom.getImplicitHydrogenCount();
-                if(hCount != 0) {
-                    if(isDbg()) log.debug(String.format("   - adding %d hydrogens...", hCount));
+                if (hCount != 0) {
+                    if (isDbg()) log.debug(String.format("   - adding %d hydrogens...", hCount));
                     addHydrogens(atom, hCount, fGroup);
                     atom.setImplicitHydrogenCount(0);
                 }
             }
         }
 
-        if(isDbg()) log.debug("########## Expansion of full environments for functional groups completed. ##########");
+        if (isDbg()) log.debug("########## Expansion of full environments for functional groups completed. ##########");
     }
 
     private void expandEnvironment(IAtom atom, IAtomContainer container) {
         List<EnvironmentalC> environment = environmentsMap.get(atom);
 
-        if(environment == null || environment.isEmpty()) {
-            if(isDbg()) log.debug("		found no environment to expand.");
+        if (environment == null || environment.isEmpty()) {
+            if (isDbg()) log.debug("		found no environment to expand.");
             return;
         }
 
@@ -622,7 +622,7 @@ public class ErtlFunctionalGroupsFinder {
             IAtom cAtom = atom.getBuilder().newInstance(IAtom.class, "C");
             cAtom.setAtomTypeName("C");
             cAtom.setImplicitHydrogenCount(0);
-            if(envC.getType() == EnvironmentCalCType.C_AROMATIC) {
+            if (envC.getType() == EnvironmentCalCType.C_AROMATIC) {
                 cAtom.setIsAromatic(true);
                 cAromCount++;
             }
@@ -636,7 +636,7 @@ public class ErtlFunctionalGroupsFinder {
             container.addBond(bond);
         }
 
-        if(isDbg()) log.debug(String.format("		expanded environment: %dx C_ar and %dx C_al", cAromCount, cAliphCount));
+        if (isDbg()) log.debug(String.format("		expanded environment: %dx C_ar and %dx C_al", cAromCount, cAliphCount));
     }
 
     // only call this on marked heteroatoms / carbonyl-C's!
@@ -644,26 +644,26 @@ public class ErtlFunctionalGroupsFinder {
 
         List<EnvironmentalC> environment = environmentsMap.get(atom);
 
-        if(environment == null) {
-            if(isDbg()) log.debug("		found no environment to expand.");
+        if (environment == null) {
+            if (isDbg()) log.debug("		found no environment to expand.");
             return;
         }
 
         int rAtomCount = environment.size();
         int rAtomsForCCount = rAtomCount;
-        if(atom.getAtomicNumber() == 8 && atom.getImplicitHydrogenCount() == 1) {
+        if (atom.getAtomicNumber() == 8 && atom.getImplicitHydrogenCount() == 1) {
             addHydrogens(atom, 1, container);
             atom.setImplicitHydrogenCount(0);
-            if(isDbg()) log.debug("		expanded hydrogen on connected OH-Group");
+            if (isDbg()) log.debug("		expanded hydrogen on connected OH-Group");
         }
-        else if(isHeteroatom(atom)) rAtomCount += atom.getImplicitHydrogenCount();
+        else if (isHeteroatom(atom)) rAtomCount += atom.getImplicitHydrogenCount();
         addRAtoms(atom, rAtomCount, container);
 
-        if(atom.getImplicitHydrogenCount() != 0) {
+        if (atom.getImplicitHydrogenCount() != 0) {
             atom.setImplicitHydrogenCount(0);
         }
 
-        if(isDbg()) log.debug(String.format("		expanded environment: %dx R-atom (incl. %d for H replacement)", rAtomCount, rAtomCount - rAtomsForCCount));
+        if (isDbg()) log.debug(String.format("		expanded environment: %dx R-atom (incl. %d for H replacement)", rAtomCount, rAtomCount - rAtomsForCCount));
     }
 
     private static final boolean isHeteroatom(IAtom atom) {
@@ -709,7 +709,7 @@ public class ErtlFunctionalGroupsFinder {
         for(int atomIdx = 0; atomIdx < sourceContainer.getAtomCount(); atomIdx++) {
             int fGroupId = atomIdxToFGMap[atomIdx];
 
-            if(fGroupId == -1) {
+            if (fGroupId == -1) {
                 continue;
             }
 
@@ -724,7 +724,7 @@ public class ErtlFunctionalGroupsFinder {
             IAtomContainer beginGroup = atomtoFGMap.get(bond.getBegin());
             IAtomContainer endGroup = atomtoFGMap.get(bond.getEnd());
 
-            if(beginGroup == null || endGroup == null || beginGroup != endGroup)
+            if (beginGroup == null || endGroup == null || beginGroup != endGroup)
                 continue;
 
             beginGroup.addBond(bond);
@@ -733,14 +733,14 @@ public class ErtlFunctionalGroupsFinder {
         // single electrons
         for (ISingleElectron electron : sourceContainer.singleElectrons()) {
             IAtomContainer group = atomtoFGMap.get(electron.getAtom());
-            if(group != null)
+            if (group != null)
                 group.addSingleElectron(electron);
         }
 
         // lone pairs
         for (ILonePair lonePair : sourceContainer.lonePairs()) {
             IAtomContainer group = atomtoFGMap.get(lonePair.getAtom());
-            if(group != null)
+            if (group != null)
                 group.addLonePair(lonePair);
         }
 
@@ -753,19 +753,19 @@ public class ErtlFunctionalGroupsFinder {
 
     private boolean checkConstraints(IAtomContainer molecule) {
         for(IAtom atom : molecule.atoms()) {
-            if(atom.getFormalCharge() != null && atom.getFormalCharge() != 0) {
+            if (atom.getFormalCharge() != null && atom.getFormalCharge() != 0) {
                 throw new IllegalArgumentException("Input molecule must not contain any charges.");
             }
-            if(!isNonmetal(atom)) {
+            if (!isNonmetal(atom)) {
                 throw new IllegalArgumentException("Input molecule must not contain metals or metalloids.");
             }
-            if(atom.getImplicitHydrogenCount() == null) {
+            if (atom.getImplicitHydrogenCount() == null) {
                 atom.setImplicitHydrogenCount(0);
             }
         }
 
         ConnectedComponents cc = new ConnectedComponents(adjList);
-        if(cc.nComponents() != 1) {
+        if (cc.nComponents() != 1) {
             throw new IllegalArgumentException("Input molecule must consist of only a single connected stucture.");
         }
 

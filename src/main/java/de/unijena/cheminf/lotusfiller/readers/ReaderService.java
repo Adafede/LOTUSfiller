@@ -32,7 +32,7 @@ public class ReaderService {
 
             for(String f : this.molecularFiles){
                 System.out.println(f);
-                if(f.contains("sdf") || f.contains("smi") || f.contains("mol") || f.contains("inchi") || f.contains("csv") || f.contains("tsv")){
+                if (f.contains("sdf") || f.contains("smi") || f.contains("mol") || f.contains("inchi") || f.contains("csv") || f.contains("tsv")){
                     molecularFileFound = true;
                 }
             }
@@ -54,7 +54,7 @@ public class ReaderService {
             rw.acceptFileFormat = rw.acceptFile(molFile);
             boolean start = rw.startWorker();
 
-            if(start){
+            if (start){
                 taskExecutor.execute(rw);
                 System.out.println("Task "+molFile+" executing");
 
@@ -85,7 +85,7 @@ public class ReaderService {
             rw.acceptFileFormat = rw.acceptFile(file);
             boolean start = rw.startWorker();
 
-            if(start){
+            if (start){
                 taskExecutor.execute(rw);
                 System.out.println("Task "+file+" executing");
                 String source = file;
@@ -108,7 +108,7 @@ public class ReaderService {
     /*public void readSyntheticMoleculesAndInsertInMongo(String filename){
         //check file extension and if it is not empty
         File smFile = new File(filename);
-        if(filename.contains("tsv") && smFile.length()>0){
+        if (filename.contains("tsv") && smFile.length()>0){
             //start read worker
             ReadWorker rw = new ReadWorker(smFile);
             rw.doWorkSM();

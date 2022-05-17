@@ -85,7 +85,7 @@ public class FragmentCalculatorTask implements Runnable {
         System.out.println("Computing NP fragments for task "+taskid);
         for(LotusUniqueNaturalProduct np : batchOfNaturalProducts) {
 
-            //if(np.npl_score != null &&  np.npl_score != 0.0){//compoute only for those that were not computed
+            //if (np.npl_score != null &&  np.npl_score != 0.0){//compoute only for those that were not computed
                 Double npl_score = 0.0;
                 Double npl_score_with_sugar = 0.0;
                 Double npl_score_noh = 0.0;
@@ -302,7 +302,7 @@ public class FragmentCalculatorTask implements Runnable {
     public Integer computeNumberOfHeavyAtoms(IAtomContainer ac){
         Integer numberHeavyAtoms = 0;
         for(IAtom a : ac.atoms() ){
-            if(!a.getSymbol().equals("H")){
+            if (!a.getSymbol().equals("H")){
                 numberHeavyAtoms++;
             }
         }
@@ -322,7 +322,7 @@ public class FragmentCalculatorTask implements Runnable {
 
         //atomContainer = calculateAromaticity(atomContainer);
 
-        if(atomContainer != null && !atomContainer.isEmpty()) {
+        if (atomContainer != null && !atomContainer.isEmpty()) {
 
             for (IAtom atom : atomContainer.atoms()) {
                 try {
@@ -334,7 +334,7 @@ public class FragmentCalculatorTask implements Runnable {
             }
 
             for(String signature : atomSignatures){
-                if(countedAtomSignatures.containsKey(signature)){
+                if (countedAtomSignatures.containsKey(signature)){
                     countedAtomSignatures.put(signature, countedAtomSignatures.get(signature)+1);
                 }
                 else{

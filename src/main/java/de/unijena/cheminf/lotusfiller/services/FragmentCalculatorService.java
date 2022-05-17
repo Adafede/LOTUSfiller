@@ -292,7 +292,7 @@ public class FragmentCalculatorService {
                 try {
                     MurckoFragmenter murckoFragmenter = new MurckoFragmenter(true, 3);
                     murckoFragmenter.generateFragments(acFull);
-                    if(murckoFragmenter.getFragments() != null && murckoFragmenter.getFragments().length >0) {
+                    if (murckoFragmenter.getFragments() != null && murckoFragmenter.getFragments().length >0) {
                         np.setMurko_framework(murckoFragmenter.getFrameworks()[0]);
                         lotusUniqueNaturalProductRepository.save(np);
                     }
@@ -328,7 +328,7 @@ public class FragmentCalculatorService {
 
         //atomContainer = calculateAromaticity(atomContainer);
 
-        if( atomContainer != null  && !atomContainer.isEmpty()) {
+        if ( atomContainer != null  && !atomContainer.isEmpty()) {
 
             for (IAtom atom : atomContainer.atoms()) {
                 try {
@@ -356,7 +356,7 @@ public class FragmentCalculatorService {
 
         //atomContainer = calculateAromaticity(atomContainer);
 
-        if(atomContainer !=null && !atomContainer.isEmpty()) {
+        if (atomContainer !=null && !atomContainer.isEmpty()) {
 
             for (IAtom atom : atomContainer.atoms()) {
                 try {
@@ -368,7 +368,7 @@ public class FragmentCalculatorService {
             }
 
             for(String signature : atomSignatures){
-                if(countedAtomSignatures.containsKey(signature)){
+                if (countedAtomSignatures.containsKey(signature)){
                     countedAtomSignatures.put(signature, countedAtomSignatures.get(signature)+1);
                 }
                 else{
@@ -492,7 +492,7 @@ public class FragmentCalculatorService {
     public Integer computeNumberOfHeavyAtoms(IAtomContainer ac){
         Integer numberHeavyAtoms = 0;
         for(IAtom a : ac.atoms() ){
-            if(!a.getSymbol().equals("H")){
+            if (!a.getSymbol().equals("H")){
                 numberHeavyAtoms++;
             }
         }

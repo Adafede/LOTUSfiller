@@ -893,12 +893,12 @@ public class SugarRemovalService {
         Map<Object, Object> tmpProperties = aMolecule.getProperties();
         IAtomContainerSet tmpUnconnectedFragments = ConnectivityChecker.partitionIntoMolecules(aMolecule);
         IAtomContainer tmpBiggestFragment;
-        if(tmpUnconnectedFragments != null && tmpUnconnectedFragments.getAtomContainerCount() >= 1) {
+        if (tmpUnconnectedFragments != null && tmpUnconnectedFragments.getAtomContainerCount() >= 1) {
             tmpBiggestFragment = tmpUnconnectedFragments.getAtomContainer(0);
             int tmpBiggestFragmentHeavyAtomCount = AtomContainerManipulator.getHeavyAtoms(tmpBiggestFragment).size();
             for(IAtomContainer tmpFragment : tmpUnconnectedFragments.atomContainers()){
                 int tmpFragmentHeavyAtomCount = AtomContainerManipulator.getHeavyAtoms(tmpFragment).size();
-                if(tmpFragmentHeavyAtomCount > tmpBiggestFragmentHeavyAtomCount){
+                if (tmpFragmentHeavyAtomCount > tmpBiggestFragmentHeavyAtomCount){
                     tmpBiggestFragment = tmpFragment;
                     tmpBiggestFragmentHeavyAtomCount = tmpFragmentHeavyAtomCount;
                 }
@@ -923,12 +923,12 @@ public class SugarRemovalService {
         Map<Object, Object> tmpProperties = aMolecule.getProperties();
         IAtomContainerSet tmpUnconnectedFragments = ConnectivityChecker.partitionIntoMolecules(aMolecule);
         IAtomContainer tmpHeaviestFragment;
-        if(tmpUnconnectedFragments != null && tmpUnconnectedFragments.getAtomContainerCount() >= 1) {
+        if (tmpUnconnectedFragments != null && tmpUnconnectedFragments.getAtomContainerCount() >= 1) {
             tmpHeaviestFragment = tmpUnconnectedFragments.getAtomContainer(0);
             double tmpHeaviestFragmentWeight = AtomContainerManipulator.getMass(tmpHeaviestFragment);
             for(IAtomContainer tmpFragment : tmpUnconnectedFragments.atomContainers()){
                 double tmpFragmentWeight = AtomContainerManipulator.getMass(tmpFragment);
-                if(tmpFragmentWeight > tmpHeaviestFragmentWeight){
+                if (tmpFragmentWeight > tmpHeaviestFragmentWeight){
                     tmpHeaviestFragment = tmpFragment;
                     tmpHeaviestFragmentWeight = tmpFragmentWeight;
                 }
@@ -1766,7 +1766,7 @@ public class SugarRemovalService {
         //false for NaN and infinity arguments
         boolean tmpIsFinite = Double.isFinite(aDouble);
         boolean tmpIsNegative = (aDouble < 0);
-        if(!tmpIsFinite || tmpIsNegative) {
+        if (!tmpIsFinite || tmpIsNegative) {
             throw new IllegalArgumentException("Given double is NaN, infinite or negative.");
         }
         if (!this.includeNrOfAttachedOxygens) {

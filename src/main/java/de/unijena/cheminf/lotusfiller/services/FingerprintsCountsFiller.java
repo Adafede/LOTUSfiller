@@ -33,10 +33,10 @@ public class FingerprintsCountsFiller {
         for(String lotus_id : allLotusIds){
             LotusUniqueNaturalProduct np = lotusUniqueNaturalProductRepository.findByLotus_id(lotus_id).get(0);
 
-            if(!np.pubchemFingerprint.isEmpty()){
+            if (!np.pubchemFingerprint.isEmpty()){
                 for(Integer bitOnIndex : np.pubchemFingerprint){
 
-                    if(counts.containsKey(bitOnIndex)){
+                    if (counts.containsKey(bitOnIndex)){
                         //add count
                         counts.put(bitOnIndex, counts.get(bitOnIndex) + 1);
 

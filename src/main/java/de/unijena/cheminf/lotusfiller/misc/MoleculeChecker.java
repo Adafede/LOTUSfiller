@@ -51,17 +51,17 @@ public class MoleculeChecker {
         SmilesGenerator sg = new SmilesGenerator(SmiFlavor.Absolute);
         SmilesParser sp = new SmilesParser(DefaultChemObjectBuilder.getInstance());
 
-        if(!containsStrangeElements(molecule)) {
+        if (!containsStrangeElements(molecule)) {
 
             /**
              * Checking for connectivity and selecting the biggest component
              */
 
             List<IAtomContainer> listAC = mcc.checkConnectivity(molecule);
-            if( listAC.size()>=1 ){
+            if ( listAC.size()>=1 ){
                 IAtomContainer biggestComponent = listAC.get(0);
                 for(IAtomContainer partac : listAC){
-                    if(partac.getAtomCount()>biggestComponent.getAtomCount()){
+                    if (partac.getAtomCount()>biggestComponent.getAtomCount()){
                         biggestComponent = partac;
                     }
                 }
@@ -69,11 +69,11 @@ public class MoleculeChecker {
 
                 int nbheavyatoms = 0;
                 for(IAtom a : molecule.atoms()){
-                    if(!a.getSymbol().equals("H")){
+                    if (!a.getSymbol().equals("H")){
                         nbheavyatoms++;
                     }
                 }
-                if(nbheavyatoms<= MIN_HEAVY_ATOM_COUNT || nbheavyatoms>=MAX_HEAVY_ATOM_COUNT){
+                if (nbheavyatoms<= MIN_HEAVY_ATOM_COUNT || nbheavyatoms>=MAX_HEAVY_ATOM_COUNT){
                     return null;
                 }
             }
@@ -239,7 +239,7 @@ public class MoleculeChecker {
 
 
     private boolean containsStrangeElements(IAtomContainer molecule) {
-        if(molecule.getAtomCount()>0) {
+        if (molecule.getAtomCount()>0) {
             for (IAtom atom : molecule.atoms()) {
                 if (!symbols2Check.contains(atom.getSymbol())) {
                     System.out.println("contains strange");
@@ -254,7 +254,7 @@ public class MoleculeChecker {
 
     public boolean isForbiddenMolecule(IAtomContainer molecule){
         String inchikey = molecule.getProperty("INCHIKEY");
-        if(inchis2Check.contains(inchikey)){
+        if (inchis2Check.contains(inchikey)){
             return true;
         }
         return false;

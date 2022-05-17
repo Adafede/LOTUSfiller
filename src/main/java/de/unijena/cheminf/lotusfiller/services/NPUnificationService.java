@@ -127,10 +127,10 @@ public class NPUnificationService {
                 String snpDOI = snp.taxonomyReferenceObject.getReferenceDOI();
                 String taxoDB = snp.taxonomyReferenceObject.getOrganism_taxo_db();
 
-                if(unp.taxonomyReferenceObjects.containsKey(snpDOI)){
+                if (unp.taxonomyReferenceObjects.containsKey(snpDOI)){
                     // need to check if DB already in or not
 
-                    if( unp.taxonomyReferenceObjects.get(snpDOI).containsKey(taxoDB)){
+                    if ( unp.taxonomyReferenceObjects.get(snpDOI).containsKey(taxoDB)){
                         UncomplicatedTaxonomy unt = makeUncomplicatedTaxonomyFromSourceNP(snp.getTaxonomyReferenceObject(), unp);
                         unp.taxonomyReferenceObjects.get(snpDOI).get(taxoDB).add(unt);
 
@@ -165,7 +165,7 @@ public class NPUnificationService {
 
 
                 //synonyms
-                if(snp.getSynonyms() != null){
+                if (snp.getSynonyms() != null){
 
                     String[] synonyms;
 
@@ -180,7 +180,7 @@ public class NPUnificationService {
                 }
 
                 //cas
-                if(snp.getCas() != null && snp.getCas() != ""){
+                if (snp.getCas() != null && snp.getCas() != ""){
                     unp.setCas(snp.getCas() );
                 }
 
@@ -248,7 +248,7 @@ public class NPUnificationService {
 
 
         // cleaning the NaNs
-        if(m.getMolecular_weight().isNaN()){
+        if (m.getMolecular_weight().isNaN()){
             m.setMolecular_weight(0.0);
         }
 
@@ -257,8 +257,8 @@ public class NPUnificationService {
         IBond[] bonds = acm.getBondArray(im);
         int bondCount = 0;
         for(IBond b : bonds){
-            if(b.getAtomCount() == 2){
-                if(!b.getAtom(0).getSymbol().equals("H") && !b.getAtom(1).getSymbol().equals("H")){
+            if (b.getAtomCount() == 2){
+                if (!b.getAtom(0).getSymbol().equals("H") && !b.getAtom(1).getSymbol().equals("H")){
                     bondCount++;
                 }
             }
@@ -394,105 +394,105 @@ public class NPUnificationService {
     public Hashtable createSourceURLS(){
         Hashtable<String, String> urls = new Hashtable<>();
 
-        if( this.sourceNames != null && !this.sourceNames.isEmpty()){
+        if ( this.sourceNames != null && !this.sourceNames.isEmpty()){
             for(String sourceName : this.sourceNames){
-                /*if(sourceName.equals("biofacquim")){
+                /*if (sourceName.equals("biofacquim")){
                     urls.put("biofacquim", "https://biofacquim.herokuapp.com/");
                 }*/
 
-                if(sourceName.equals("bitterdb")){
+                if (sourceName.equals("bitterdb")){
                     urls.put("bitterdb", "http://bitterdb.agri.huji.ac.il/compound.php?id=");
                 }
 
-                if(sourceName.equals("carotenoids")){
+                if (sourceName.equals("carotenoids")){
                     urls.put("carotenoids", "http://carotenoiddb.jp/Entries/");
                 }
 
-                if(sourceName.equals("chebi_np")){
+                if (sourceName.equals("chebi_np")){
                     urls.put("chebi_np", "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:");
                 }
 
-                if(sourceName.equals("chembl_np")){
+                if (sourceName.equals("chembl_np")){
                     urls.put("chembl_np", "https://www.ebi.ac.uk/chembl/compound_report_card/");
                 }
 
 
-                if(sourceName.equals("cmaup")){
+                if (sourceName.equals("cmaup")){
                     urls.put("cmaup", "http://bidd2.nus.edu.sg/CMAUP/searchresults.php?keyword_search=");
                 }
 
-                if(sourceName.equals("pubchem_tested_np")){
+                if (sourceName.equals("pubchem_tested_np")){
                     urls.put("pubchem_tested_np", "https://pubchem.ncbi.nlm.nih.gov/compound/");
                 }
 
-                if(sourceName.equals("drugbanknp")){
+                if (sourceName.equals("drugbanknp")){
                     urls.put("drugbanknp", "https://www.drugbank.ca/drugs/");
                 }
 
 
-                if(sourceName.equals("chemspidernp")){
+                if (sourceName.equals("chemspidernp")){
                     urls.put("chemspidernp", "http://www.chemspider.com/Chemical-Structure.");
                 }
 
-                if(sourceName.equals("np_atlas_2019_12") ){
+                if (sourceName.equals("np_atlas_2019_12") ){
                     urls.put("np_atlas_2019_12", "https://www.npatlas.org/joomla/index.php/explore/compounds#npaid=");
                 }
 
-                if(sourceName.equals("npatlas")){
+                if (sourceName.equals("npatlas")){
                     urls.put("npatlas", "https://www.npatlas.org/joomla/index.php/explore/compounds#npaid=");
                 }
 
 
 
 
-                if(sourceName.equals("exposome-explorer")){
+                if (sourceName.equals("exposome-explorer")){
                     urls.put("exposome-explorer", "http://exposome-explorer.iarc.fr/compounds/");
                 }
 
-                if(sourceName.equals("fooddb")){
+                if (sourceName.equals("fooddb")){
                     urls.put("fooddb", "https://foodb.ca/compounds/");
                 }
 
-                if(sourceName.equals("knapsack")){
+                if (sourceName.equals("knapsack")){
                     urls.put("knapsack", "http://www.knapsackfamily.com/knapsack_core/information.php?mode=r&word=");
                 }
 
-                if(sourceName.equals("npass")){
+                if (sourceName.equals("npass")){
                     urls.put("npass", "http://bidd2.nus.edu.sg/NPASS/browse_np.php?compound=");
                 }
 
-                if(sourceName.equals("nubbe")){
+                if (sourceName.equals("nubbe")){
                     urls.put("nubbe", "https://nubbe.iq.unesp.br/portal/nubbe-search.html");
                 }
 
-                if(sourceName.equals("phenolexplorer")){
+                if (sourceName.equals("phenolexplorer")){
                     urls.put("phenolexplorer", "http://phenol-explorer.eu/compounds/");
                 }
 
 
-                if(sourceName.equals("sancdb")){
+                if (sourceName.equals("sancdb")){
                     urls.put("sancdb", "https://sancdb.rubi.ru.ac.za/compounds/");
                 }
 
 
-                if(sourceName.equals("supernatural2")){
+                if (sourceName.equals("supernatural2")){
                     urls.put("supernatural2", "http://bioinf-applied.charite.de/supernatural_new/index.php?site=compound_search&id=");
                 }
 
 
-                if(sourceName.equals("tcmdb_taiwan")){
+                if (sourceName.equals("tcmdb_taiwan")){
                     urls.put("tcmdb_taiwan", "http://tcm.cmu.edu.tw/");
                 }
 
-                if(sourceName.equals("tppt")){
+                if (sourceName.equals("tppt")){
                     urls.put("tppt", "https://www.agroscope.admin.ch/agroscope/en/home/publications/apps/tppt.html");
                 }
 
-                if(sourceName.equals("vietherb")){
+                if (sourceName.equals("vietherb")){
                     urls.put("vietherb", "https://vietherb.com.vn/metabolites/");
                 }
 
-                if(sourceName.equals("streptomedb")){
+                if (sourceName.equals("streptomedb")){
                     urls.put("streptomedb", "http://132.230.56.4/streptomedb2/get_drugcard/");
                 }
 
@@ -518,48 +518,48 @@ public class NPUnificationService {
         unp.allTaxa.add(tro.getOrganism_value());
 
 
-        if(tro.getDomain() != null && tro.getDomain() != "" && !tro.getDomain().equals("null")){
+        if (tro.getDomain() != null && tro.getDomain() != "" && !tro.getDomain().equals("null")){
             uncomplicatedTaxonomy.setDomain(tro.getDomain());
 
             unp.allTaxa.add(tro.getDomain());
         }
 
-        if(tro.getSuperkingdom() != null && tro.getSuperkingdom() != "" && !tro.getSuperkingdom().equals("null")){
+        if (tro.getSuperkingdom() != null && tro.getSuperkingdom() != "" && !tro.getSuperkingdom().equals("null")){
             uncomplicatedTaxonomy.setSuperkingdom(tro.getSuperkingdom());
             unp.allTaxa.add(tro.getSuperkingdom());
         }
 
-        if(tro.getKingdom() != null && tro.getKingdom() != "" && !tro.getKingdom().equals("null")){
+        if (tro.getKingdom() != null && tro.getKingdom() != "" && !tro.getKingdom().equals("null")){
             uncomplicatedTaxonomy.setKingdom(tro.getKingdom());
             unp.allTaxa.add(tro.getKingdom());
         }
 
-        if(tro.getPhylum() != null && tro.getPhylum() != "" && !tro.getPhylum().equals("null")){
+        if (tro.getPhylum() != null && tro.getPhylum() != "" && !tro.getPhylum().equals("null")){
             uncomplicatedTaxonomy.setPhylum(tro.getPhylum());
             unp.allTaxa.add(tro.getPhylum());
         }
 
-        if(tro.getClassx() != null && tro.getClassx() != "" && !tro.getClassx().equals("null")){
+        if (tro.getClassx() != null && tro.getClassx() != "" && !tro.getClassx().equals("null")){
             uncomplicatedTaxonomy.setClassx(tro.getClassx());
             unp.allTaxa.add(tro.getClassx());
         }
 
-        if(tro.getOrder()!=null && tro.getOrder() != "" && !tro.getOrder().equals("null")){
+        if (tro.getOrder()!=null && tro.getOrder() != "" && !tro.getOrder().equals("null")){
             uncomplicatedTaxonomy.setOrder(tro.getOrder());
             unp.allTaxa.add(tro.getOrder());
         }
 
-        if(tro.getFamily() != null && tro.getFamily() != "" && !tro.getFamily().equals("null")){
+        if (tro.getFamily() != null && tro.getFamily() != "" && !tro.getFamily().equals("null")){
             uncomplicatedTaxonomy.setFamily(tro.getFamily());
             unp.allTaxa.add(tro.getFamily());
         }
 
-        if(tro.getGenus() != null && tro.getGenus() != "" && !tro.getGenus().equals("null")){
+        if (tro.getGenus() != null && tro.getGenus() != "" && !tro.getGenus().equals("null")){
             uncomplicatedTaxonomy.setGenus(tro.getGenus());
             unp.allTaxa.add(tro.getGenus());
         }
 
-        if(tro.getSpecies() != null && tro.getSpecies() != "" && !tro.getSpecies().equals("null")){
+        if (tro.getSpecies() != null && tro.getSpecies() != "" && !tro.getSpecies().equals("null")){
             uncomplicatedTaxonomy.setSpecies(tro.getSpecies());
             unp.allTaxa.add(tro.getSpecies());
         }

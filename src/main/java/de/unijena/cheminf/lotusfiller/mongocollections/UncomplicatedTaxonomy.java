@@ -47,15 +47,15 @@ public class UncomplicatedTaxonomy {
 
 
 
-        if(this.domain != null){
+        if (this.domain != null){
             taxRanks.add("domain");
         }
 
-        if(this.superkingdom != null){
+        if (this.superkingdom != null){
             taxRanks.add("superkingdom");
         }
 
-        if(this.kingdom != null){
+        if (this.kingdom != null){
             taxRanks.add("kingdom");
         }
 
@@ -63,23 +63,23 @@ public class UncomplicatedTaxonomy {
             taxRanks.add("phylum");
         }
 
-        if(this.classx != null){
+        if (this.classx != null){
             taxRanks.add("classx");
         }
 
-        if(this.order != null){
+        if (this.order != null){
             taxRanks.add("order");
         }
 
-        if(this.family != null){
+        if (this.family != null){
             taxRanks.add("family");
         }
 
-        if(this.genus != null){
+        if (this.genus != null){
             taxRanks.add("genus");
         }
 
-        if(this.species != null){
+        if (this.species != null){
             taxRanks.add("species");
         }
 
@@ -96,15 +96,15 @@ public class UncomplicatedTaxonomy {
         ArrayList taxNames = new ArrayList();
         String prettyString = "";
 
-        if(this.domain != null){
+        if (this.domain != null){
             taxNames.add(this.domain);
         }
 
-        if(this.superkingdom != null){
+        if (this.superkingdom != null){
             taxNames.add(this.superkingdom);
         }
 
-        if(this.kingdom != null){
+        if (this.kingdom != null){
             taxNames.add(this.kingdom);
         }
 
@@ -112,23 +112,23 @@ public class UncomplicatedTaxonomy {
             taxNames.add(this.phylum);
         }
 
-        if(this.classx != null){
+        if (this.classx != null){
             taxNames.add(this.classx);
         }
 
-        if(this.order != null){
+        if (this.order != null){
             taxNames.add(this.order);
         }
 
-        if(this.family != null){
+        if (this.family != null){
             taxNames.add(this.family);
         }
 
-        if(this.genus != null){
+        if (this.genus != null){
             taxNames.add(this.genus);
         }
 
-        if(this.species != null){
+        if (this.species != null){
             taxNames.add(this.species);
         }
 

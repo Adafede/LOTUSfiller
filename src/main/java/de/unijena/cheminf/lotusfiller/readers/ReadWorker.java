@@ -41,7 +41,7 @@ public class ReadWorker implements Runnable {
 
 
     public boolean startWorker(){
-        if(acceptFileFormat){
+        if (acceptFileFormat){
             return true;
         }
         else{
@@ -75,7 +75,7 @@ public class ReadWorker implements Runnable {
         ){
             this.submittedFileFormat="inchi";
             return true;
-        }else if(filename.endsWith("csv") || filename.endsWith("tsv") ){
+        }else if (filename.endsWith("csv") || filename.endsWith("tsv") ){
             this.submittedFileFormat="csv";
             return true;
         }

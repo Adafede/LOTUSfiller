@@ -148,7 +148,7 @@ public class MolecularFeaturesComputationService {
         List<LotusUniqueNaturalProduct> allNP = lotusUniqueNaturalProductRepository.findAll();
 
         for(LotusUniqueNaturalProduct np : allNP) {
-            if( np.pubchemBitsString == null || np.pubchemBitsString == "") {
+            if ( np.pubchemBitsString == null || np.pubchemBitsString == "") {
 
                 IAtomContainer ac = atomContainerToUniqueNaturalProductService.createAtomContainer(np);
 

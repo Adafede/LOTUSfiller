@@ -34,7 +34,7 @@ public class AnnotationLevelService {
 
         LotusUniqueNaturalProduct np = lotusUniqueNaturalProductRepository.findByLotus_id(lotus_id).get(0);
 
-        if(np != null) {
+        if (np != null) {
 
             Integer annotationlevel = 1; //0 means it was never treated, 1 means that it was treated, but none of the
 

@@ -50,7 +50,7 @@ public class CreateCNPidService {
 
 
             while ((line = bufferedReader.readLine()) != null){
-                if(!line.startsWith("lotus_id")) {
+                if (!line.startsWith("lotus_id")) {
                     //ArrayList<String> dataline = new ArrayList<String>(Arrays.asList(line.split(","))); //coconut_id = 0, inchikey = 1
                     String[] dataTab = line.split(",") ;
 
@@ -131,12 +131,12 @@ public class CreateCNPidService {
 
         for(LotusUniqueNaturalProduct np : allnp){
 
-            if(np.lotus_id.equals("")){
+            if (np.lotus_id.equals("")){
                 unpWithoutId.add(np);
 
-            }else if(np.lotus_id.startsWith("LTS")){
+            }else if (np.lotus_id.startsWith("LTS")){
                 int coconut_tmp = Integer.parseInt( np.getLotus_id().split("TS")[1] );
-                if(coconut_tmp>max_id ){
+                if (coconut_tmp>max_id ){
                     max_id = coconut_tmp;
                 }
             }

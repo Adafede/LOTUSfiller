@@ -62,15 +62,15 @@ public class TaxonomyReferenceObject {
         ArrayList taxNames = new ArrayList();
         String prettyString = "";
 
-        if(this.domain != null){
+        if (this.domain != null){
             taxNames.add(this.domain);
         }
 
-        if(this.superkingdom != null){
+        if (this.superkingdom != null){
             taxNames.add(this.superkingdom);
         }
 
-        if(this.kingdom != null){
+        if (this.kingdom != null){
             taxNames.add(this.kingdom);
         }
 
@@ -78,23 +78,23 @@ public class TaxonomyReferenceObject {
             taxNames.add(this.phylum);
         }
 
-        if(this.classx != null){
+        if (this.classx != null){
             taxNames.add(this.classx);
         }
 
-        if(this.order != null){
+        if (this.order != null){
             taxNames.add(this.order);
         }
 
-        if(this.family != null){
+        if (this.family != null){
             taxNames.add(this.family);
         }
 
-        if(this.genus != null){
+        if (this.genus != null){
             taxNames.add(this.genus);
         }
 
-        if(this.species != null){
+        if (this.species != null){
             taxNames.add(this.species);
         }
 
@@ -385,11 +385,11 @@ public class TaxonomyReferenceObject {
         this.taxon_name = taxon_name;
     }
 
-    public String getTaxon_id_gbif() {
+    public String getTaxon_id_gbif () {
         return taxon_id_gbif;
     }
 
-    public void setTaxon_id_gbif(String taxon_id_gbif) {
+    public void setTaxon_id_gbif (String taxon_id_gbif) {
         this.taxon_id_gbif = taxon_id_gbif;
     }
 

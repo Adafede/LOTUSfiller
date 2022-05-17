@@ -36,7 +36,7 @@ public class ReadAndLoadMetadata {
                     HashSet<String> addedOrgids = new HashSet<>();
 
                     for(UncomplicatedTaxonomy ut : lunp.taxonomyReferenceObjects.get(doi).get(taxDb)){
-                        if(!addedOrgids.contains(ut.getCleaned_organism_id()) ){
+                        if (!addedOrgids.contains(ut.getCleaned_organism_id()) ){
                             newUTlist.add(ut);
                             addedOrgids.add(ut.getCleaned_organism_id());
                         }
@@ -155,18 +155,18 @@ public class ReadAndLoadMetadata {
 
 
 
-                    if(indexOfInchikey != null){
+                    if (indexOfInchikey != null){
                         //search for the inchikey in the database
                         List<LotusUniqueNaturalProduct> lotusUniqueNaturalProducts = lotusUniqueNaturalProductRepository.findByInchikey(dataline.get(indexOfInchikey));
-                        if(!lotusUniqueNaturalProducts.isEmpty()) {
+                        if (!lotusUniqueNaturalProducts.isEmpty()) {
                             LotusUniqueNaturalProduct lunp = lotusUniqueNaturalProducts.get(0);
                             System.out.println(lunp.getLotus_id()+"  "+lunp.getInchikey());
 
-                            if(lunp.allWikidataIds==null){
+                            if (lunp.allWikidataIds==null){
                                 lunp.allWikidataIds = new HashSet<>();
                             }
 
-                            if(indexOfStructureWikidata != null){
+                            if (indexOfStructureWikidata != null){
                                 lunp.setWikidata_id(dataline.get(indexOfStructureWikidata));
                                 lunp.allWikidataIds.add(dataline.get(indexOfStructureWikidata).split("/")[dataline.get(indexOfStructureWikidata).split("/").length-1]);
                             }
@@ -181,34 +181,34 @@ public class ReadAndLoadMetadata {
                                 lunp.allChemClassifications.add(dataline.get(indexOfstructure_taxonomy_npclassifier_01pathway));
                             }
 
-                            if(indexOfstructure_taxonomy_npclassifier_02superclass != null){
+                            if (indexOfstructure_taxonomy_npclassifier_02superclass != null){
                                 lunp.setChemicalTaxonomyNPclassifierSuperclass(dataline.get(indexOfstructure_taxonomy_npclassifier_02superclass));
                                 lunp.allChemClassifications.add(dataline.get(indexOfstructure_taxonomy_npclassifier_02superclass));
                             }
 
-                            if(indexOfstructure_taxonomy_npclassifier_03class != null){
+                            if (indexOfstructure_taxonomy_npclassifier_03class != null){
                                 lunp.setChemicalTaxonomyNPclassifierClass(dataline.get(indexOfstructure_taxonomy_npclassifier_03class));
                                 lunp.allChemClassifications.add(dataline.get(indexOfstructure_taxonomy_npclassifier_03class));
                             }
 
 
                             // add the classyfire values
-                            if(indexOfstructure_taxonomy_classyfire_01kingdom != null){
+                            if (indexOfstructure_taxonomy_classyfire_01kingdom != null){
                                 lunp.setChemicalTaxonomyClassyfireKingdom(dataline.get(indexOfstructure_taxonomy_classyfire_01kingdom));
                                 lunp.allChemClassifications.add(dataline.get(indexOfstructure_taxonomy_classyfire_01kingdom));
                             }
 
-                            if(indexOfstructure_taxonomy_classyfire_02superclass != null){
+                            if (indexOfstructure_taxonomy_classyfire_02superclass != null){
                                 lunp.setChemicalTaxonomyClassyfireSuperclass(dataline.get(indexOfstructure_taxonomy_classyfire_02superclass));
                                 lunp.allChemClassifications.add(dataline.get(indexOfstructure_taxonomy_classyfire_02superclass));
                             }
 
-                            if(indexOfstructure_taxonomy_classyfire_03class != null){
+                            if (indexOfstructure_taxonomy_classyfire_03class != null){
                                 lunp.setChemicalTaxonomyClassyfireClass(dataline.get(indexOfstructure_taxonomy_classyfire_03class));
                                 lunp.allChemClassifications.add(dataline.get(indexOfstructure_taxonomy_classyfire_03class));
                             }
 
-                            if(indexOfstructure_taxonomy_classyfire_04directparent != null){
+                            if (indexOfstructure_taxonomy_classyfire_04directparent != null){
                                 lunp.setChemicalTaxonomyClassyfireDirectParent(dataline.get(indexOfstructure_taxonomy_classyfire_04directparent));
                                 lunp.allChemClassifications.add(dataline.get(indexOfstructure_taxonomy_classyfire_04directparent));
                             }
@@ -217,7 +217,7 @@ public class ReadAndLoadMetadata {
 
                             //assign wikidata ids to organisms and references
 
-                            if(indexOfreference_wikidata!= null && indexOfreference_doi != null && indexOforganism_wikidata!= null && indexOforganism_name != null) {
+                            if (indexOfreference_wikidata!= null && indexOfreference_doi != null && indexOforganism_wikidata!= null && indexOforganism_name != null) {
                                 String adaptedDOI = dataline.get(indexOfreference_doi).replace(".", "$x$x$");
                                 if (lunp.taxonomyReferenceObjects.containsKey(adaptedDOI) && lunp.taxonomyReferenceObjects.get(adaptedDOI).containsKey("Open Tree of Life")){
                                     HashSet<UncomplicatedTaxonomy> utList = lunp.taxonomyReferenceObjects.get(adaptedDOI).get("Open Tree of Life");

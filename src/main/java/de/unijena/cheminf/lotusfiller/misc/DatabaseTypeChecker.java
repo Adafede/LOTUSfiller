@@ -43,16 +43,16 @@ public class DatabaseTypeChecker {
 
         public String checkContinent(String sourceDB){
 
-            if(continentAfrica.contains(sourceDB)){
+            if (continentAfrica.contains(sourceDB)){
                 return "africa";
             }
-            else if(continentAsia.contains(sourceDB)){
+            else if (continentAsia.contains(sourceDB)){
                 return "asia";
             }
-            else if(continentEurope.contains(sourceDB)){
+            else if (continentEurope.contains(sourceDB)){
                 return "europe";
             }
-            else if(continentAmerica.contains(sourceDB)){
+            else if (continentAmerica.contains(sourceDB)){
                 return "america";
             }
             else {
@@ -62,22 +62,22 @@ public class DatabaseTypeChecker {
 
 
         public String checkKingdom(String sourceDB){
-            if(taxPlants.contains(sourceDB)){
+            if (taxPlants.contains(sourceDB)){
                 return "plants";
             }
-            else if(taxBacteria.contains(sourceDB)){
+            else if (taxBacteria.contains(sourceDB)){
                 return "bacteria";
             }
-            else if(taxAnimals.contains(sourceDB)){
+            else if (taxAnimals.contains(sourceDB)){
                 return "animals";
             }
-            else if(taxFungi.contains(sourceDB)){
+            else if (taxFungi.contains(sourceDB)){
                 return "fungi";
             }
-            else if(taxMarine.contains(sourceDB)){
+            else if (taxMarine.contains(sourceDB)){
                 return "marine";
             }
-            else if(taxMixed.contains(sourceDB)){
+            else if (taxMixed.contains(sourceDB)){
                 return "mixed";
             }
             else{
