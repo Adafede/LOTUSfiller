@@ -13,12 +13,13 @@ packages_github <- NULL
 ZENODO_FROZEN <- "https://doi.org/10.5281/zenodo.5794106"
 ZENODO_METADATA <- "https://doi.org/10.5281/zenodo.6378224"
 
-PATTERN_FROZEN <- "frozen.csv.gz"
+PATTERN_FROZEN <- "frozen_metadata.csv.gz"
 PATTERN_METADATA_ORGANISMS <- "organism_metadata"
 PATTERN_METADATA_REFERENCES <- "reference_metadata"
 PATTERN_METADATA_STRUCTURES <- "structure_metadata"
 
-PATH_EXPORT <- "data/lotus.tsv" #' @Maria can your reader read gzip?
+PATH_EXPORT_LOTUS <- "data/lotus.tsv" #' @Maria can your reader read gzip?
+PATH_EXPORT_LOTUS_METADATA <- "data/lotus_metadata.tsv"
 
 ################################## FUNCTIONS ##################################
 
@@ -126,21 +127,81 @@ check_and_load_packages()
 #' Get last versions of each file from Zenodo
 last_frozen <- get_last_file_from_zenodo(url = ZENODO_FROZEN,
                                          pattern = PATTERN_FROZEN)
-last_metadata_structures <-
-  get_last_file_from_zenodo(url = ZENODO_METADATA,
-                            pattern = PATTERN_METADATA_STRUCTURES)
 last_metadata_organisms <-
   get_last_file_from_zenodo(url = ZENODO_METADATA,
-                            pattern = PATTERN_METADATA_ORGANISMS)
-# last_metadata_references <-
-#   get_last_file_from_zenodo(url = ZENODO_METADATA,
-#                             pattern = PATTERN_METADATA_REFERENCES)
+                            pattern = PATTERN_METADATA_ORGANISMS) |>
+  dplyr::select(
+    organismCleaned,
+    organismCleaned_id,
+    organismCleaned_dbTaxo,
+    organismCleaned_dbTaxoTaxonRanks,
+    organismCleaned_dbTaxoTaxonomy
+  ) |>
+  dplyr::distinct()
+last_metadata_references <-
+  get_last_file_from_zenodo(url = ZENODO_METADATA,
+                            pattern = PATTERN_METADATA_REFERENCES) |>
+  dplyr::select(
+    referenceCleanedDoi,
+    referenceCleanedPmcid,
+    referenceCleanedPmid,
+    referenceCleanedTitle
+  ) |>
+  dplyr::distinct()
+last_metadata_structures <-
+  get_last_file_from_zenodo(url = ZENODO_METADATA,
+                            pattern = PATTERN_METADATA_STRUCTURES) |>
+  dplyr::select(
+    structureCleanedInchikey,
+    structureCleanedInchi,
+    structureCleanedSmiles,
+    structureCleaned_inchikey2D,
+    structureCleaned_inchi2D,
+  ) |>
+  dplyr::distinct()
 
 #' Tidy everything
-# TODO
+lotus_metadata <- last_frozen |>
+  dplyr::select(
+    # organismType,
+    # organismValue,
+    # structureType,
+    # structureValue,
+    # referenceType,
+    # referenceValue,
+    organismCleaned = organism_name,
+    # organismCleaned_id,
+    # organismCleaned_dbTaxo,
+    # organismCleaned_dbTaxoTaxonRanks,
+    # organismCleaned_dbTaxoTaxonomy,
+    structureCleanedInchikey = structure_inchikey,
+    structureCleanedInchi = structure_inchi,
+    structureCleanedSmiles = structure_smiles,
+    # structureCleaned_inchikey2D,
+    # structureCleaned_inchi2D,
+    structureCleaned_smiles2D = structure_smiles_2D,
+    structureCleaned_molecularFormula = structure_molecular_formula,
+    # structureCleaned_exactMass = structure_exact_mass
+    structureCleaned_nameIupac = structure_nameIupac,
+    structureCleaned_nameTraditional = structure_nameTraditional,
+    structureCleaned_stereocenters_total = structure_stereocenters_total,
+    structureCleaned_stereocenters_unspecified = structure_stereocenters_unspecified,
+    referenceCleanedDoi = reference_doi,
+    # referenceCleanedPmcid,
+    # referenceCleanedPmid,
+    # referenceCleanedTitle
+  ) |>
+  dplyr::left_join(last_metadata_organisms) |>
+  dplyr::left_join(last_metadata_structures) |>
+  dplyr::left_join(last_metadata_references)
 
 #' Export
-# TODO
+# readr::write_delim(x = last_frozen,
+#                    file = PATH_EXPORT_LOTUS,
+#                    delim = "\t")
+# readr::write_delim(x = lotus_metadata,
+#                    file = PATH_EXPORT_LOTUS_METADATA,
+#                    delim = "\t")
 
 end <- Sys.time()
 
