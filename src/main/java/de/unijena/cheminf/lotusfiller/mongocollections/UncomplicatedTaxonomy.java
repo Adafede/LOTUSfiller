@@ -12,7 +12,9 @@ public class UncomplicatedTaxonomy {
 
     public String wikidata_id;
 
+
     public String reference_wikidata_id;
+
 
     String domain = null;
 
@@ -32,13 +34,18 @@ public class UncomplicatedTaxonomy {
 
     String species = null;
 
+
     public UncomplicatedTaxonomy() {
     }
+
+
 
 
     public String getAllRanks(){
         ArrayList taxRanks = new ArrayList();
         String prettyString = "";
+
+
 
         if(this.domain != null){
             taxRanks.add("domain");
@@ -76,9 +83,12 @@ public class UncomplicatedTaxonomy {
             taxRanks.add("species");
         }
 
+
         prettyString = String.join(" | ", taxRanks);
         return prettyString;
     }
+
+
 
     @Override
     public String toString(){
@@ -122,9 +132,13 @@ public class UncomplicatedTaxonomy {
             taxNames.add(this.species);
         }
 
+
+
         prettyString = String.join(" | ", taxNames);
         return prettyString;
     }
+
+
 
     public String getWikidata_id() {
         return wikidata_id;

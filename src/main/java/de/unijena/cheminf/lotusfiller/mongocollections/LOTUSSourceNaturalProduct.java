@@ -28,11 +28,13 @@ public class LOTUSSourceNaturalProduct {
 
     public String inchikey2D;
 
+
     public String cas;
 
     public Integer heavyAtomNumber;
 
     public Integer totalAtomNumber;
+
 
     public String comment;
 

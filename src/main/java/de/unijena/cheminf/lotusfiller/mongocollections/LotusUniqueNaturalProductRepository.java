@@ -28,6 +28,9 @@ public interface LotusUniqueNaturalProductRepository extends MongoRepository<Lot
     @Query("{ $text: { $search: ?0 } }")
     public List<LotusUniqueNaturalProduct> fuzzyNameSearch(String name);
 
+
+
+
     @Query("{ npl_noh_score: { $exists:false } }")
     List<LotusUniqueNaturalProduct> findAllByNPLScoreComputed();
 
@@ -36,5 +39,8 @@ public interface LotusUniqueNaturalProductRepository extends MongoRepository<Lot
 
     @Query("{ pubchemBits : { $bitsAllSet : ?0  }}")
     List<LotusUniqueNaturalProduct> findAllPubchemBitsSet(byte[] querybits) ;
+
+
+
 
 }

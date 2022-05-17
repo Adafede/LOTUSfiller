@@ -33,8 +33,6 @@ public class LOTUSSourceNaturalProductRepositoryImpl implements LOTUSSourceNatur
 
         return result;
     }
-    //COMMENT AR: same short inchikey thing...shall I generate them upstream in the file? 
-    // Or shall we do a small grep of the first 14 chars? Or drop them?
     /*public List<Object> findUniqueInchiKeys() {
         return mongoTemplate.query(LOTUSSourceNaturalProduct.class).distinct("simpleInchiKey").all()  ;
     }*/
