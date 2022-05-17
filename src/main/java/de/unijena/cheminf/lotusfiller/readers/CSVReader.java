@@ -59,10 +59,10 @@ public class CSVReader implements Reader {
         SmilesGenerator absoluteSmilesGenerator = new SmilesGenerator(SmiFlavor.Absolute );
         SmilesParser sp = new SmilesParser(DefaultChemObjectBuilder.getInstance());
         this.file = file;
-        if(file.getName().toLowerCase().endsWith("csv")){
+        if (file.getName().toLowerCase().endsWith("csv")){
             this.source = file.getName().toLowerCase().replace(".csv", "");
         }
-        else if(file.getName().toLowerCase().endsWith("tsv")){
+        else if (file.getName().toLowerCase().endsWith("tsv")){
             this.source = file.getName().toLowerCase().replace(".tsv", "");
         }
 
@@ -78,7 +78,8 @@ public class CSVReader implements Reader {
 
             if (file.getName().toLowerCase().endsWith("csv")) {
                 header = new ArrayList<String>(Arrays.asList(bufferedReader.readLine().replace("\"", "").split(",")));
-            } else if (file.getName().toLowerCase().endsWith("tsv")) {
+            }
+            else if (file.getName().toLowerCase().endsWith("tsv")) {
                 header = new ArrayList<String>(Arrays.asList(bufferedReader.readLine().replace("\"", "").split("\t")));
             }
 
@@ -426,10 +427,10 @@ public class CSVReader implements Reader {
 
 
                     ArrayList<String> dataline = null ;
-                    if(file.getName().toLowerCase().endsWith("csv")) {
+                    if (file.getName().toLowerCase().endsWith("csv")) {
                         dataline = new ArrayList<String>(Arrays.asList(line.replace("\"", "").split(",")));
                     }
-                    else if(file.getName().toLowerCase().endsWith("tsv")){
+                    else if (file.getName().toLowerCase().endsWith("tsv")){
                         dataline = new ArrayList<String>(Arrays.asList(line.replace("\"", "").split("\t")));
 
                     }
@@ -473,7 +474,7 @@ public class CSVReader implements Reader {
                                     System.out.println(count);
                                     System.out.println(dataline.toString());
                                 }
-                            }catch (InvalidSmilesException e){
+                            } catch (InvalidSmilesException e){
                                 //try to read the inchi at least
                                 if (indexOfStructureCleanedInchi != null && dataline.size() >= indexOfStructureCleanedInchi + 1){
                                     // READING InCHI
@@ -484,7 +485,8 @@ public class CSVReader implements Reader {
                                     if (ret == INCHI_RET.WARNING) {
                                         // Structure generated, but with warning message
                                         System.out.println("InChI warning: " + intostruct.getMessage());
-                                    } else if (ret != INCHI_RET.OKAY) {
+                                    } 
+                                    else if (ret != INCHI_RET.OKAY) {
                                         // Structure generation failed
                                         throw new CDKException("Structure generation failed failed: " + ret.toString() + " [" + intostruct.getMessage() + "]");
                                     }
@@ -504,7 +506,8 @@ public class CSVReader implements Reader {
                                 }
                             }
 
-                        } else if (indexOfStructureCleanedInchi != null && dataline.size() >= indexOfStructureCleanedInchi + 1) {
+                        } 
+                        else if (indexOfStructureCleanedInchi != null && dataline.size() >= indexOfStructureCleanedInchi + 1) {
                             // READING InCHI
                             InChIGeneratorFactory factory = InChIGeneratorFactory.getInstance();
                             InChIToStructure intostruct = factory.getInChIToStructure(dataline.get(indexOfStructureCleanedInchi), DefaultChemObjectBuilder.getInstance());
@@ -513,7 +516,8 @@ public class CSVReader implements Reader {
                             if (ret == INCHI_RET.WARNING) {
                                 // Structure generated, but with warning message
                                 System.out.println("InChI warning: " + intostruct.getMessage());
-                            } else if (ret != INCHI_RET.OKAY) {
+                            } 
+                            else if (ret != INCHI_RET.OKAY) {
                                 // Structure generation failed
                                 throw new CDKException("Structure generation failed failed: " + ret.toString() + " [" + intostruct.getMessage() + "]");
                             }
@@ -553,7 +557,7 @@ public class CSVReader implements Reader {
 
                                 int heavyAtomCount = 0;
                                 for(IAtom a : molecule.atoms()){
-                                    if(!a.getSymbol().equals("H")){
+                                    if (!a.getSymbol().equals("H")){
                                         heavyAtomCount=heavyAtomCount+1;
                                     }
                                 }
@@ -604,29 +608,29 @@ public class CSVReader implements Reader {
 
 
                                 //getting the molecule name
-                                if(indexOfstructureCleaned_nameTraditional != null){
+                                if (indexOfstructureCleaned_nameTraditional != null){
                                     lotusSourceNaturalProduct.setTraditionalName( dataline.get(indexOfstructureCleaned_nameTraditional));
                                 }
 
-                                if(indexOfstructureCleaned_nameIupac != null){
+                                if (indexOfstructureCleaned_nameIupac != null){
                                     lotusSourceNaturalProduct.setIupacName(dataline.get(indexOfstructureCleaned_nameIupac));
                                 }
 
                                 /*
                                 //getting cross-refs
                                 lotusSourceNaturalProduct.setLinkToWDstructure(dataline.get(indexOflinkToWDstructure));
-                                if(indexOfCAS != null){
+                                if (indexOfCAS != null){
                                     lotusSourceNaturalProduct.setCas(dataline.get(indexOfCAS));
                                 }
 
                                 lotusSourceNaturalProduct.xrefs = new Hashtable<>();
-                                if(indexOfChebi != null){
+                                if (indexOfChebi != null){
                                     lotusSourceNaturalProduct.xrefs.put("CHEBI", dataline.get(indexOfChebi));
                                 }
-                                if(indexOfChembl != null){
+                                if (indexOfChembl != null){
                                     lotusSourceNaturalProduct.xrefs.put("CHEMBL", dataline.get(indexOfChembl));
                                 }
-                                if(indexOfPubchem != null){
+                                if (indexOfPubchem != null){
                                     lotusSourceNaturalProduct.xrefs.put("PUBCHEM", dataline.get(indexOfPubchem));
                                 }
 
@@ -647,15 +651,15 @@ public class CSVReader implements Reader {
                                 Integer ixGenus = null;
                                 Integer ixSpecies =null;
 
-                                if(indexOfReferenceCleanedDOI != null){
+                                if (indexOfReferenceCleanedDOI != null){
                                     taxonomyReferenceObject.setReferenceDOI(dataline.get(indexOfReferenceCleanedDOI).replace(".", "$x$x$"));
                                 }
 
-                                if(indexOfReferenceCleanedTitle != null){
+                                if (indexOfReferenceCleanedTitle != null){
                                     taxonomyReferenceObject.setReferenceTitle(dataline.get(indexOfReferenceCleanedTitle));
                                 }
 
-                                if(indexOfOrganismCleaned_dbTaxoTaxonRanks != null){
+                                if (indexOfOrganismCleaned_dbTaxoTaxonRanks != null){
                                     taxonomyReferenceObject.setRanks(dataline.get(indexOfOrganismCleaned_dbTaxoTaxonRanks));
 
 
@@ -664,67 +668,67 @@ public class CSVReader implements Reader {
 
 
                                     for(String r : ranks){
-                                        if(r.equals("superkingdom")){
+                                        if (r.equals("superkingdom")){
                                             ixSuperkingdom = ranks.indexOf(r);
                                         }
-                                        if(r.equals("kingdom")){
+                                        if (r.equals("kingdom")){
                                             ixKingdom = ranks.indexOf(r);
                                         }
-                                        if(r.equals("domain")){
+                                        if (r.equals("domain")){
                                             ixDomain = ranks.indexOf(r);
                                         }
-                                        if(r.equals("phylum")){
+                                        if (r.equals("phylum")){
                                             ixPhylum = ranks.indexOf(r);
                                         }
-                                        if(r.equals("class")){
+                                        if (r.equals("class")){
                                             ixClass = ranks.indexOf(r);
                                         }
-                                        if(r.equals("order")){
+                                        if (r.equals("order")){
                                             ixOrder = ranks.indexOf(r);
                                         }
-                                        if(r.equals("family")){
+                                        if (r.equals("family")){
                                             ixFamily = ranks.indexOf(r);
                                         }
-                                        if(r.equals("genus")){
+                                        if (r.equals("genus")){
                                             ixGenus = ranks.indexOf(r);
                                         }
-                                        if(r.equals("species")){
+                                        if (r.equals("species")){
                                             ixSpecies = ranks.indexOf(r);
                                         }
 
                                     }
                                 }
 
-                                if(indexOfOrganismCleaned_dbTaxoTaxonomy != null){
+                                if (indexOfOrganismCleaned_dbTaxoTaxonomy != null){
                                     taxonomyReferenceObject.setAll_taxonomy(dataline.get(indexOfOrganismCleaned_dbTaxoTaxonomy));
 
                                     ArrayList<String> taxo = new ArrayList<String>(Arrays.asList(dataline.get(indexOfOrganismCleaned_dbTaxoTaxonomy).split("\\|")));
 
-                                    if(ixSuperkingdom != null){
+                                    if (ixSuperkingdom != null){
                                         taxonomyReferenceObject.setSuperkingdom(taxo.get(ixSuperkingdom));
                                     }
-                                    if(ixKingdom != null){
+                                    if (ixKingdom != null){
                                         taxonomyReferenceObject.setKingdom(taxo.get(ixKingdom));
                                     }
-                                    if(ixDomain != null){
+                                    if (ixDomain != null){
                                         taxonomyReferenceObject.setDomain(taxo.get(ixDomain));
                                     }
-                                    if(ixPhylum != null){
+                                    if (ixPhylum != null){
                                         taxonomyReferenceObject.setPhylum(taxo.get(ixPhylum));
                                     }
-                                    if(ixClass != null){
+                                    if (ixClass != null){
                                         taxonomyReferenceObject.setClassx(taxo.get(ixClass));
                                     }
-                                    if(ixOrder != null){
+                                    if (ixOrder != null){
                                         taxonomyReferenceObject.setOrganism_taxo_db(taxo.get(ixOrder));
                                     }
-                                    if(ixFamily != null){
+                                    if (ixFamily != null){
                                         taxonomyReferenceObject.setFamily(taxo.get(ixFamily));
                                     }
-                                    if(ixGenus != null){
+                                    if (ixGenus != null){
                                         taxonomyReferenceObject.setGenus(taxo.get(ixGenus));
                                     }
-                                    if(ixSpecies != null){
+                                    if (ixSpecies != null){
                                         taxonomyReferenceObject.setSpecies(taxo.get(ixSpecies));
                                     }
 
@@ -734,11 +738,11 @@ public class CSVReader implements Reader {
                                     taxonomyReferenceObject.setCleaned_organism_id(dataline.get(indexOfOrganismCleanedId));
                                 }
 
-                                if(indexOfOrganismCleaned != null){
+                                if (indexOfOrganismCleaned != null){
                                     taxonomyReferenceObject.setOrganism_value(dataline.get(indexOfOrganismCleaned));
                                 }
 
-                                if(indexOfOrganismCleanedDBTaxo != null){
+                                if (indexOfOrganismCleanedDBTaxo != null){
                                     taxonomyReferenceObject.setOrganism_taxo_db(dataline.get(indexOfOrganismCleanedDBTaxo));
                                 }
 
@@ -751,14 +755,14 @@ public class CSVReader implements Reader {
 
                                 /*
                                 //citation reference and doi
-                                if(indexOfReferenceWDLink != null) {
+                                if (indexOfReferenceWDLink != null) {
                                     taxonomyReferenceObject.setReference_wd(dataline.get(indexOfReferenceWDLink));
                                 }
-                                if(indexOfReferenceDOI != null){
+                                if (indexOfReferenceDOI != null){
                                     taxonomyReferenceObject.setReference_doi(dataline.get(indexOfReferenceDOI));
                                 }
 
-                                if(indexOfReferenceTitle != null){
+                                if (indexOfReferenceTitle != null){
                                     taxonomyReferenceObject.setReference_title(dataline.get(indexOfReferenceTitle));
                                 }
 

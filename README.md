@@ -11,15 +11,11 @@ mvn package
 ```
 
 ```
-mongoexport --db NPOC2021 --collection lotusUniqueNaturalProduct --type=csv --fields lotus_id,inchikey --out lotus_ids_may2022.txt
+java -jar target/lotusfiller-0.0.2-SNAPSHOT.jar data/test_old.tsv fragments/fragment_without_sugar.txt fragments/fragment_with_sugar.txt > log/latest.logs.may17_1.txt
 ```
 
 ```
-java -jar target/lotusfiller-0.0.2-SNAPSHOT.jar fragments/fragment_without_sugar.txt fragments/fragment_with_sugar.txt > log/latest.logs.may16_1.txt &&
-
-java -jar target/lotusfiller-0.0.2-SNAPSHOT.jar data fragments/fragment_without_sugar.txt fragments/fragment_with_sugar.txt > log/latest.logs.may16_2.txt &&
-
-java -jar target/lotusfiller-0.0.2-SNAPSHOT.jar data/test.tsv fragments/fragment_without_sugar.txt fragments/fragment_with_sugar.txt importLOTUSids lotus_ids_may2022.txt > log/latest.logs.may16_3.txt 
+java -jar target/lotusfiller-0.0.2-SNAPSHOT.jar addMetadata data/test_metadata_old.tsv  > log/latest.logs.may17_2.txt
 ```
 
 ```
@@ -93,9 +89,5 @@ exit
 ```
 
 ```
-java -jar target/lotusfiller-0.0.2-SNAPSHOT.jar data/test.tsv fragments/fragment_without_sugar.txt fragments/fragment_with_sugar.txt > log/latest.logs.may16_4.txt
-```
-
-```
-java -jar target/lotusfiller-0.0.2-SNAPSHOT.jar cleanRecomputeMissing fragments/fragment_without_sugar.txt fragments/fragment_with_sugar.txt > log/latest.logs.may16_5.txt
+java -jar target/lotusfiller-0.0.2-SNAPSHOT.jar cleanRecomputeMissing fragments/fragment_without_sugar.txt fragments/fragment_with_sugar.txt > log/latest.logs.may17_3.txt
 ```
