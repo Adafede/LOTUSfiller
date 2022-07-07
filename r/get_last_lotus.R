@@ -11,7 +11,7 @@ packages_github <- NULL
 ################################## VARIABLES ##################################
 
 ZENODO_FROZEN <- "https://doi.org/10.5281/zenodo.5794106"
-ZENODO_METADATA <- "https://doi.org/10.5281/zenodo.6378224"
+ZENODO_METADATA <- "https://doi.org/10.5281/zenodo.6378223"
 
 PATTERN_FROZEN <- "frozen_metadata.csv.gz"
 PATTERN_METADATA_ORGANISMS <- "organism_metadata"
