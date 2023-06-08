@@ -1,10 +1,12 @@
 ################################# DEPENDENCIES #################################
 packages_cran <-
-  c("curl",
+  c(
+    "curl",
     "dplyr",
     "purrr",
     "readr",
-    "rvest")
+    "rvest"
+  )
 packages_bioconductor <- NULL
 packages_github <- NULL
 
@@ -39,7 +41,7 @@ check_and_load_packages <- function(cran = packages_cran,
   installed_packages_bioconductor <-
     bioconductor %in% installed_packages
   installed_packages_github <- github %in% installed_packages
-  
+
   if (!is.null(bioconductor)) {
     cran <- cran |>
       append("BiocManager")
@@ -48,7 +50,7 @@ check_and_load_packages <- function(cran = packages_cran,
     cran <- cran |>
       append("remotes")
   }
-  
+
   if (any(installed_packages_cran == FALSE)) {
     install.packages(cran[!installed_packages_cran])
   }
@@ -58,18 +60,20 @@ check_and_load_packages <- function(cran = packages_cran,
   if (any(installed_packages_github == FALSE)) {
     lapply(X = github[!installed_packages_github], FUN = remotes::install_github)
   }
-  
-  return(lapply(c(
-    cran,
-    bioconductor,
-    gsub(
-      pattern = ".*/",
-      replacement = "",
-      x = github
-    )
-  ),
-  require,
-  character.only = TRUE) |>
+
+  return(lapply(
+    c(
+      cran,
+      bioconductor,
+      gsub(
+        pattern = ".*/",
+        replacement = "",
+        x = github
+      )
+    ),
+    require,
+    character.only = TRUE
+  ) |>
     invisible())
 }
 
@@ -86,15 +90,17 @@ check_and_load_packages <- function(cran = packages_cran,
 follow_next <- function(session,
                         text = "Next",
                         ...) {
-  link <- rvest::html_element(x = session,
-                              xpath = sprintf("//*[text()[contains(.,'%s')]]", text))
-  
+  link <- rvest::html_element(
+    x = session,
+    xpath = sprintf("//*[text()[contains(.,'%s')]]", text)
+  )
+
   url <- rvest::html_attr(link, "href") |>
     trimws() |>
     gsub(pattern = "^\\.{1}/", replacement = "")
-  
+
   message("Navigating to ", url)
-  
+
   rvest::session_jump_to(session, url, ...)
 }
 
@@ -113,7 +119,7 @@ get_last_file_from_zenodo <- function(url, pattern) {
     purrr::pluck("url") |>
     curl::curl_download(destfile = tempfile()) |>
     readr::read_delim()
-  
+
   return(file)
 }
 
@@ -125,11 +131,15 @@ start <- Sys.time()
 check_and_load_packages()
 
 #' Get last versions of each file from Zenodo
-last_frozen <- get_last_file_from_zenodo(url = ZENODO_FROZEN,
-                                         pattern = PATTERN_FROZEN)
+last_frozen <- get_last_file_from_zenodo(
+  url = ZENODO_FROZEN,
+  pattern = PATTERN_FROZEN
+)
 last_metadata_organisms <-
-  get_last_file_from_zenodo(url = ZENODO_METADATA,
-                            pattern = PATTERN_METADATA_ORGANISMS) |>
+  get_last_file_from_zenodo(
+    url = ZENODO_METADATA,
+    pattern = PATTERN_METADATA_ORGANISMS
+  ) |>
   dplyr::select(
     organismCleaned,
     organismCleaned_id,
@@ -139,8 +149,10 @@ last_metadata_organisms <-
   ) |>
   dplyr::distinct()
 last_metadata_references <-
-  get_last_file_from_zenodo(url = ZENODO_METADATA,
-                            pattern = PATTERN_METADATA_REFERENCES) |>
+  get_last_file_from_zenodo(
+    url = ZENODO_METADATA,
+    pattern = PATTERN_METADATA_REFERENCES
+  ) |>
   dplyr::select(
     referenceCleanedDoi,
     referenceCleanedPmcid,
@@ -149,8 +161,10 @@ last_metadata_references <-
   ) |>
   dplyr::distinct()
 last_metadata_structures <-
-  get_last_file_from_zenodo(url = ZENODO_METADATA,
-                            pattern = PATTERN_METADATA_STRUCTURES) |>
+  get_last_file_from_zenodo(
+    url = ZENODO_METADATA,
+    pattern = PATTERN_METADATA_STRUCTURES
+  ) |>
   dplyr::select(
     structureCleanedInchikey,
     structureCleanedInchi,
